@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+        function viewPdfDocument(pdfname){
+
+            if(pdfname!="") {
+
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdf/?fileName=" + pdfname + ".pdf"));
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+ <h3>文件上传</h3>
+
+ <form action="/fileupload2" method="post" enctype="multipart/form-data">
+    选择文件：<input type="file" name="upload" id="pdffile"/><br/>
+    <input type="submit" value="上传" />
+ </form>
+ <br>
+
+ <input type="button"  value="button" id="button" onclick="viewPdfDocument('test')"> ni</input>
+
+
+
+
+</body>
+</html>
