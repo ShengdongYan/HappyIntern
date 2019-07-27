@@ -1,11 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    <link th:href="@{/css/studentLogin.css}" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>HappyIntern</title>
+    <script>
+
+
+        function checkForm(){
+
+
+                        if ($("#sname").val() !== "" && $("#password").val() !== "" ) {
+                            return true;
+
+                        } else {
+                            errorInfo = "Complete all your information please ";
+                            alert(errorInfo);
+                            return false;
+                        }
+
+
+        }
+
+        $(function () {
+            $("#button").click(function () {
+                if(checkForm()) {
+                    $.post("loginStudent", $("#registForm").serialize(), function (data) {
+                        if (data.flag) {
+
+                            location.href = "/student/index";
+
+                        } else {
+                            alert(data.errorMsg);
+                        }
+
+                    });
+
+                }
+                else return;
+            });
+
+
+        });
+
+    </script>
 </head>
 <body>
-student
+<div class="topbar">
+    <a class="icon" href="/student/index" style="text-decoration: none"> HappyIntern</a>
+</div>
+
+<div class="bigBox">
+    <div class="innerBox">
+        <div class="buttonBox">
+            <a class="signIn" href="loginPage"> Log In </a><!--<span>|</span>-->
+            <a class="logIn"  href="registPage"> Register </a>
+        </div>
+        <div class="clean" style="    margin: auto;
+    display: block;
+    width: 500px;
+    height: 40px;
+    /*border: #FF5555 solid 1px;*/
+  "> </div>
+
+        <form id="registForm" name="registForm" class="signForm" method="post" >
+            <div class="divname">
+                <label class="username">Username</label>
+                <input type="text" class="Inputname" id="sname" name="sname">
+            </div>
+            <div class="divpassword">
+                <label class="password">Password</label>
+                <input type="text" class="Inputpassword" id="password" name="password">
+            </div>
+            <div class="clean" > </div>
+            <div class="divbutton">
+                <input type="button" id ="button"  name="button" value="Login"
+                       style="
+            background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            font-size: 22px;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin: 0 auto 20px;
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;
+
+
+
+              }">
+
+            </div>
+
+        </form>
+    </div>
+
+</div>
 
 </body>
 </html>

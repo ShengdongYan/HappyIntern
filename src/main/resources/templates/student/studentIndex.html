@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/studentindex.css}" rel="stylesheet" type="text/css"/> <!--//相当于又从服务器请求了一次资源，会通过拦截器-->
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+    <script>
+        $(function () {
+            $.post("/loginTest/student", $(), function (data) {
+              if (data.flag) {
+                  var username = data.data.sname;
+                  alert("Welcome back "+username + " !");
+
+                  $("#username").html( "<a href='' id='username'>"+username+"</a>");
+                } else {
+                   /* alert(data.errorMsg);*/
+                }
+
+            });
+
+
+        });
+    </script>
+<body>
+<div class="topbar">
+    <div class="container">
+        <a href="/"><img src="/img/HappyIntern.png" alt=""></a>
+        <div class="topbar-left">
+            <span>|</span>
+            <a href=""  class="advertisement" style="    border-bottom: 5px solid #EEEEEE;
+           ">Internships</a><span>|</span>
+            <a href="">ManageCV</a> <span>|</span>
+            <a href="">ApplyHistory</a><span>|</span>
+            <a href="">WeeklyReport</a> <span>|</span>
+            <a href="">Profile</a> <span>|</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/student/loginPage" id="username">Login</a>
+        </div>
+    </div>
+</div>
+
+<div class="searchbox">
+    <div class="searchbar">
+        <div class="logo">
+            <a href="/"><img src="/img/favicon.png" alt=""></a>
+        </div>
+        <div class="search">
+            <input name="" id="search_input"  type="text" placeholder="e.g.web developer" class="search_input" autocomplete="off">
+            <a href="javascript:;" id="search-button" class="search-button">search</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

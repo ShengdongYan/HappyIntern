@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdong.internship.mapper.StudentMapper">
+
+    <select id="queryStudentList" resultType="student">
+    select * from student
+</select>
+    <select id="queryStudentByName" resultType="student" parameterType="String">
+        select * from student where  sname = #{sname}
+    </select>
+    <select id="queryStudentByNamePassword" resultType="student" >
+        select * from student where  sname = #{sname} and password = #{password}
+    </select>
+
+    <insert id="registStudent" parameterType="student" >
+        INSERT INTO
+            student
+            (sname,password,sage,school,smail,supname)
+        VALUES
+            ( #{sname}, #{password},#{sage}, #{school}, #{smail},#{supname})
+    </insert>
+
+</mapper>

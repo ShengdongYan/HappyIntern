@@ -1,4 +1,4 @@
-package com.dongdong.springtest;
+package com.dongdong.internship;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,0 +1,128 @@
+
+body, ul, li{
+    margin: 0;
+    padding: 0; /* 去除白边*/
+
+    font: .8em Arial, Tahoma, Verdana;
+
+}
+ul{
+    list-style-type: none;
+}
+body{
+    font: 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    height: 1000px;
+    background: #f5f7fa;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+}
+
+.topbar{
+
+    background-color: #095bbc;
+    height: 60px;
+    width: 100%;
+    border: 2px solid #095bbc;
+    box-shadow:-5px -5px 10px rgba(0,0,0,.2) inset;
+    text-align: center;
+}
+
+.topbar a{
+
+    display: block;
+    margin-top: 5px;
+    color: lightcoral;
+    font-size: 28px
+}
+
+.bigBox{
+    margin-top: 60px;
+    text-align: center;
+    height: 800px;
+    width: 100%;
+
+}
+.innerBox{
+   margin: auto;
+    display: block;
+    width: 640px;
+    height: 655px;
+    border:1px solid lightblue;
+    background: #fff;
+
+}
+.buttonBox{
+    width: 100%;
+    height: 40px;
+    margin-bottom: 50px;
+
+}
+.buttonBox a{
+    text-decoration: none;
+    font-size: 26px;
+    display: block;
+    text-align: center;
+    background: #fff;
+    box-shadow: none;
+    color: #333;
+    font-weight: 800;
+}
+.logIn{
+    border-bottom: 1px solid lightblue;
+    border-top: 4px solid lightblue;
+    float: right;
+    width: 319px;
+    height: 40px;
+    border-left: 1px solid lightblue;
+
+}
+.signIn{
+
+    border-bottom: 1px solid transparent;
+    border-top: 4px solid #e84188;
+    float: left;
+    width: 320px;
+    height: 40px;
+
+
+}
+
+label{
+    margin-top: 10px;
+    display: inline-block;
+    max-width: 100%;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.signForm div{
+    margin: auto;
+    display: block;
+    width: 500px;
+    height: 60px;
+    /*border: #FF5555 solid 1px;*/
+    padding-top: 10px;
+
+}
+.signForm input{
+    float: right;
+    margin-right: 40px;
+    display: block;
+    width: 60%;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 15px;
+    line-height: 1.53334;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #a4a4a4;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    text-rendering: auto;
+    text-align: start;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    border-image: initial;
+}
+
