@@ -132,61 +132,11 @@ public class StudentController {
 
 
 
+    @RequestMapping("/CVPage")
+    public String showCV(){
+        return "student/studentCV";
 
-/*
-    ResultInfo resultInfo = new ResultInfo();
-    String check = request.getParameter("check");
-    HttpSession session = request.getSession();
-    String checkFromserver = (String) session.getAttribute("CHECKCODE_SERVER");
-        session.removeAttribute("CHECKCODE_SERVER");
-
-
-        if (checkFromserver!=null&&check.equalsIgnoreCase(checkFromserver)){
-
-        Map<String, String[]> users = request.getParameterMap();
-        System.out.println("这里是registerservlet");
-        User user = new User();
-
-
-        try {
-            BeanUtils.populate(user,users);
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        UserService userService = new UserServiceImpl();
-        boolean result = userService.regist(user);
-        //System.out.println(result);
-
-
-        if(result==true){
-            System.out.println("注册成功");
-            resultInfo.setFlag(true);
-            resultInfo.setErrorMsg("注册成功");
-        }
-        else{
-            resultInfo.setFlag(false);
-            resultInfo.setErrorMsg("注册失败，用户名存在");
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        String  json = mapper.writeValueAsString(resultInfo);
-
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(json);
     }
-
-        else{
-
-        resultInfo.setFlag(false);
-        resultInfo.setErrorMsg("验证码错误！");
-        ObjectMapper mapper = new ObjectMapper();
-        String  json = mapper.writeValueAsString(resultInfo);
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(json);
-    }*/
 
 
 
