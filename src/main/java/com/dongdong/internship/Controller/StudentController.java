@@ -140,8 +140,15 @@ public class StudentController {
 
 
 
+    @RequestMapping("/profilePage")
+    public String showProfile(){
+        return "student/studenProfile";
 
- public static Student makeStudnt(){
+    }
+
+
+
+    public static Student makeStudnt(){
        Student student = new Student();
         student.setSage(26);
         student.setSname("ShengdongYan");

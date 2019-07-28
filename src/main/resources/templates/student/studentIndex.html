@@ -19,8 +19,51 @@
 
             });
 
+            $("#manageCV").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/CVpage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+        $("#manageCV").click(function () {
+            $.post("/loginTest/student", $(), function (data) {
+                if (data.flag) {
+
+                    location.href = "/student/CVpage";
+                } else {
+                    alert(data.errorMsg);
+                }
+
+            });
 
         });
+
+
+
+
+        $("#Profile").click(function () {
+            $.post("/loginTest/student", $(), function (data) {
+                if (data.flag) {
+                    location.href = "/student/profilePage";
+                } else {
+                    alert(data.errorMsg);
+                }
+
+            });
+
+        });
+
+
+        });
+
+
     </script>
 <body>
 <div class="topbar">
@@ -30,10 +73,10 @@
             <span>|</span>
             <a href=""  class="advertisement" style="    border-bottom: 5px solid #EEEEEE;
            ">Internships</a><span>|</span>
-            <a href="">ManageCV</a> <span>|</span>
-            <a href="">ApplyHistory</a><span>|</span>
-            <a href="">WeeklyReport</a> <span>|</span>
-            <a href="">Profile</a> <span>|</span>
+            <a  id="manageCV">ManageCV</a> <span>|</span>
+            <a  id="applyHistory">ApplyHistory</a><span>|</span>
+            <a  id="WeeklyReport">WeeklyReport</a> <span>|</span>
+            <a  id="Profile">Profile</a> <span>|</span>
         </div>
         <div class="topbar-right">
             <a href="/student/loginPage" id="username">Login</a>

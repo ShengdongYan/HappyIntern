@@ -1,5 +1,6 @@
 package com.dongdong.internship.Interceptor;
 
+import com.dongdong.internship.bean.Student;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,11 +26,10 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("前置拦截器");
-  /*
-        User user = (User)
-        String user = (String)request.getSession().getAttribute("user");
-        if(null == user){
+         System.out.println("前置拦截器");
+
+/*        Student student = (Student) request.getSession().getAttribute("student");
+        if(null == student){
             response.sendRedirect("login");
         }else{
            return true;
@@ -49,7 +49,7 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("返回拦截器");
+        //System.out.println("返回拦截器");
     }
 
     /**
@@ -63,6 +63,6 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("方法执行完毕拦截器");
+      // System.out.println("方法执行完毕拦截器");
     }
 }

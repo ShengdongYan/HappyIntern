@@ -33,7 +33,7 @@ public class LoginTestController {
             ResultUtil.feedBack(response, "登录了", student, true);
         }
         else
-            ResultUtil.feedBack(response, "没登录", student, false);
+            ResultUtil.feedBack(response, "没登录,来自登录检测器", student, false);
     }
 
 }
