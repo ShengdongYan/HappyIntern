@@ -86,77 +86,9 @@ h1, h2, h3, h4, h5, h6 {
     height: 50px;
 }
 
-.login_out, .login {  
-    height: 50px;
-    line-height: 36px;
-    float: right;
-}
 
-.login {
-    width: 205px;
-    font-size: 12px;
-}
-.login a{
-    font-size: 12px;
-    color: #a1a1a1;
-}
-.login .collection {
-    color: #ff7676;
-    margin: 0 16px 0 10px;
-}
-.login_out a {
-    color: #000;
-    font-size: 12px;
-    margin: 0 10px;
-}
 
-.header_wrap {
-    widows: 100%;
-    overflow: hidden;
-}
 
-.topbar {
-    width: 1200px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.logo,
-.search,
-.hottel {
-    float: left;
-}
-
-.logo a {
-    display: inline-block;
-}
-
-.search {
-    margin: 15px 140px 0 115px;
-}
-
-.search_input {
-    float: left;
-    width: 400px;
-    height: 36px;
-    border: 2px solid #ffc900;
-    padding-left: 10px;
-}
-
-.search_input:focus {
-    outline: none;
-}
-
-.search-button {
-    float: left;
-    width: 90px;
-    height: 40px;
-    background: #ffc900;
-    text-align: center;
-    line-height: 40px;
-    color: #000;
-    font-size: 18px;
-}
 
 ::-webkit-input-placeholder {
     /* WebKit browsers */

@@ -1024,13 +1024,13 @@ var PDFViewerApplication = {
                 var loadingErrorMessage;
 
                 if (exception instanceof _pdfjsLib.InvalidPDFException) {
-                  loadingErrorMessage = _this2.l10n.get('invalid_file_error', null, 'Invalid or corrupted PDF file.');
+                  loadingErrorMessage = _this2.l10n.get('invalid_file_error', null, 'Invalid or corrupted PDFfile file.');
                 } else if (exception instanceof _pdfjsLib.MissingPDFException) {
-                  loadingErrorMessage = _this2.l10n.get('missing_file_error', null, 'Missing PDF file.');
+                  loadingErrorMessage = _this2.l10n.get('missing_file_error', null, 'Missing PDFfile file.');
                 } else if (exception instanceof _pdfjsLib.UnexpectedResponseException) {
                   loadingErrorMessage = _this2.l10n.get('unexpected_response_error', null, 'Unexpected server response.');
                 } else {
-                  loadingErrorMessage = _this2.l10n.get('loading_error', null, 'An error occurred while loading the PDF.');
+                  loadingErrorMessage = _this2.l10n.get('loading_error', null, 'An error occurred while loading the PDFfile.');
                 }
 
                 return loadingErrorMessage.then(function (msg) {
@@ -1068,7 +1068,7 @@ var PDFViewerApplication = {
     var downloadManager = this.downloadManager;
 
     downloadManager.onerror = function (err) {
-      _this3.error("PDF failed to download: ".concat(err));
+      _this3.error("PDFfile failed to download: ".concat(err));
     };
 
     if (!this.pdfDocument || !this.downloadComplete) {
@@ -1088,7 +1088,7 @@ var PDFViewerApplication = {
     var moreInfoText = [this.l10n.get('error_version_info', {
       version: _pdfjsLib.version || '?',
       build: _pdfjsLib.build || '?'
-    }, 'PDF.js v{{version}} (build: {{build}})')];
+    }, 'PDFfile.js v{{version}} (build: {{build}})')];
 
     if (moreInfo) {
       moreInfoText.push(this.l10n.get('error_message', {
@@ -1414,7 +1414,7 @@ var PDFViewerApplication = {
       _this5.documentInfo = info;
       _this5.metadata = metadata;
       _this5.contentDispositionFilename = contentDispositionFilename;
-      console.log('PDF ' + pdfDocument.fingerprint + ' [' + info.PDFFormatVersion + ' ' + (info.Producer || '-').trim() + ' / ' + (info.Creator || '-').trim() + ']' + ' (PDF.js: ' + (_pdfjsLib.version || '-') + (_app_options.AppOptions.get('enableWebGL') ? ' [WebGL]' : '') + ')');
+      console.log('PDFfile ' + pdfDocument.fingerprint + ' [' + info.PDFFormatVersion + ' ' + (info.Producer || '-').trim() + ' / ' + (info.Creator || '-').trim() + ']' + ' (PDFfile.js: ' + (_pdfjsLib.version || '-') + (_app_options.AppOptions.get('enableWebGL') ? ' [WebGL]' : '') + ')');
       var pdfTitle;
 
       if (metadata && metadata.has('dc:title')) {
@@ -1549,7 +1549,7 @@ var PDFViewerApplication = {
     }
 
     if (!this.pdfViewer.pageViewsReady) {
-      this.l10n.get('printing_not_ready', null, 'Warning: The PDF is not fully loaded for printing.').then(function (notReadyMessage) {
+      this.l10n.get('printing_not_ready', null, 'Warning: The PDFfile is not fully loaded for printing.').then(function (notReadyMessage) {
         window.alert(notReadyMessage);
       });
       return;
@@ -1753,7 +1753,7 @@ var validateFileURL;
       }
     } catch (ex) {
       var message = ex && ex.message;
-      PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while loading the PDF.').then(function (loadingErrorMessage) {
+      PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while loading the PDFfile.').then(function (loadingErrorMessage) {
         PDFViewerApplication.error(loadingErrorMessage, {
           message: message
         });
@@ -1861,7 +1861,7 @@ function webViewerInitialized() {
   try {
     webViewerOpenFileViaURL(file);
   } catch (reason) {
-    PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while loading the PDF.').then(function (msg) {
+    PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while loading the PDFfile.').then(function (msg) {
       PDFViewerApplication.error(msg, reason);
     });
   }
@@ -5714,7 +5714,7 @@ function () {
         if (_this2.reason === _pdfjsLib.PasswordResponses.INCORRECT_PASSWORD) {
           promptString = _this2.l10n.get('password_invalid', null, 'Invalid password. Please try again.');
         } else {
-          promptString = _this2.l10n.get('password_label', null, 'Enter the password to open this PDF file.');
+          promptString = _this2.l10n.get('password_label', null, 'Enter the password to open this PDFfile file.');
         }
 
         promptString.then(function (msg) {

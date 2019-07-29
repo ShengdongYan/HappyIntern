@@ -2035,7 +2035,7 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   right: 0;
   bottom: 0;
   overflow: hidden;
-  z-index: 50000; /* should be higher than anything else in PDF.js! */
+  z-index: 50000; /* should be higher than anything else in PDFfile.js! */
 }
 
 @page {
@@ -2286,7 +2286,7 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     display: none;
   }
 
-  /* Rules for browsers that support PDF.js printing */
+  /* Rules for browsers that support PDFfile.js printing */
   body[data-pdfjsprinting] #outerContainer {
     display: none;
   }

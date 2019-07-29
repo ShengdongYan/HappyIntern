@@ -9,12 +9,12 @@
         $(function () {
             $.post("/loginTest/student", $(), function (data) {
               if (data.flag) {
-                  var username = data.data.sname;
-                  alert("Welcome back "+username + " !");
+                    var username = data.data.sname;
+                    alert("Welcome back "+username + " !");
 
-                  $("#username").html( "<a href='' id='username'>"+username+"</a>");
+                   $("#username").html( "<a href='' id='username'>"+username+"</a>");
                 } else {
-                   /* alert(data.errorMsg);*/
+                    alert(data.errorMsg);
                 }
 
             });
@@ -23,7 +23,7 @@
                 $.post("/loginTest/student", $(), function (data) {
                     if (data.flag) {
 
-                        location.href = "/student/CVpage";
+                        location.href = "/student/CVPage";
                     } else {
                         alert(data.errorMsg);
                     }
@@ -31,20 +31,6 @@
                 });
 
             });
-
-        $("#manageCV").click(function () {
-            $.post("/loginTest/student", $(), function (data) {
-                if (data.flag) {
-
-                    location.href = "/student/CVpage";
-                } else {
-                    alert(data.errorMsg);
-                }
-
-            });
-
-        });
-
 
 
 

@@ -1,0 +1,36 @@
+body{
+    font: 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    height: 1000px;
+    background: #f5f7fa;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+}
+
+.topbar{
+
+    background-color: #095bbc;
+    height: 60px;
+    width: 100%;
+    border: 2px solid #095bbc;
+    box-shadow:-5px -5px 10px rgba(0,0,0,.2) inset;
+    text-align: center;
+}
+
+.topbar a{
+
+    display: block;
+    margin-top: 5px;
+    color: lightcoral;
+    font-size: 28px
+}
+
+.bigfileBoxfileBox{
+    margin-top: 90px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 80px;
+}
+.innerBox{
+    width: 600px;
+
+    margin: auto;
+}

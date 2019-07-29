@@ -2,7 +2,6 @@
 body, ul, li{
     margin: 0;
     padding: 0; /* 去除白边*/
-
     font: .8em Arial, Tahoma, Verdana;
 
 }
@@ -16,6 +15,7 @@ body{
     font-family: "Open Sans",Helvetica,Arial,sans-serif;
 }
 
+
 .topbar{
 
     background-color: #095bbc;
@@ -23,15 +23,80 @@ body{
     width: 100%;
     border: 2px solid #095bbc;
     box-shadow:-5px -5px 10px rgba(0,0,0,.2) inset;
-    text-align: center;
+}
+
+.container{
+    margin: 0 auto; /* 剧中设置， 上下0， 左右自动*/
+    width: 1226px;
+    /* border: 1px solid black; */
+    height: 60px;
+    line-height: 60px;
+}
+.container::before { /*伪元素消除塌陷， 清理浮动，有 float的div 都要记得清理*/
+    content: "";
+    display: table;
+}
+
+.container::after{
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .topbar a{
+    text-decoration: none;
+    color: #EEEEEE;
+    font-size: 20px;
+}
+.topbar a:hover{ /*当鼠标移动到字上时*/
+    color:#000000;
+}
+
+.topbar-left{
+    float: left;
+
+
+}
+.topbar-right,.cart {
+    float: right;
+}
+
+.cart a{
 
     display: block;
-    margin-top: 5px;
-    color: lightcoral;
-    font-size: 28px
+    height: 60px;
+    line-height: 60px;
+    text-align: center; /* 文本居中*/
+    width :180px;
+
+}
+.cart a:hover {
+    background-color:#fff;
+    color: #ff6700;
+}
+.topbar-right a{
+    float: left;
+    padding: 0 5px; /*文字居中*/
+    line-height: 60px;
+    height: 60px;
+    font-size: 20px;
+}
+span{
+    font-family: sans-serif;
+    font-size: 20px;
+    color: #424242;
+    line-height: 60px;
+    height: 60px;
+    margin: 20px;
+}
+.icon{
+    text-align: center;
+    float: left;
+    line-height: 60px;
+    height: 60px;
+    width: 120px;
+    text-decoration: none;
+
 }
 
 .bigBox{

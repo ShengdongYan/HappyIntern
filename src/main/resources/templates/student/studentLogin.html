@@ -30,7 +30,11 @@
                     $.post("loginStudent", $("#registForm").serialize(), function (data) {
                         if (data.flag) {
 
+                            var username = $("#sname").val();
+                            alert("Welcome back "+username + " !");
+
                             location.href = "/student/index";
+
 
                         } else {
                             alert(data.errorMsg);

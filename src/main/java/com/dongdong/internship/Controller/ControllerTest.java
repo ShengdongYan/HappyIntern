@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,9 +38,12 @@ public class ControllerTest {
     public String fileupload2(HttpServletRequest request, MultipartFile upload) throws
             Exception {
 
+        System.out.println("hhhhhhh");
+
         String Path = new String("PDFfile/");
         File fileDir = new File(Path);
         if (!fileDir.exists()) {
+            System.out.println("文件夹不存在");
             // 递归生成文件夹
             fileDir.mkdirs();
         }
@@ -64,6 +66,8 @@ public class ControllerTest {
         return "文件上传成功";
     }
 
+
+    //直接访问/showpdf 可以实现下载功能，返回给pdfjs 可以获取在线阅读
     @RequestMapping("/showpdf")
     public String test3(HttpServletResponse response, HttpServletRequest request, String fileName) {
         System.out.println("出发");

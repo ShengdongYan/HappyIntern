@@ -21,4 +21,17 @@
             ( #{sname}, #{password},#{sage}, #{school}, #{smail},#{supname})
     </insert>
 
+    <update id="updateStudent" parameterType="student" >
+        update student set
+        sname = #{sname},
+        password = #{password},
+        sage = #{sage},
+        school = #{school},
+        smail = #{smail},
+        supname = #{supname}
+where  sid = #{sid}
+
+
+    </update>
+
 </mapper>

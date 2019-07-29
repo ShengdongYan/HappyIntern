@@ -20,6 +20,7 @@ public interface StudentMapper {
 
     public void registStudent(Student student);
 
+    public void  updateStudent(Student student);
 
 
 

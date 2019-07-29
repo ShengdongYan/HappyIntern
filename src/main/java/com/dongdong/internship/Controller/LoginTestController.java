@@ -23,12 +23,10 @@ import java.io.IOException;
         {com.dongdong.internship.bean.Student.class,String.class})
 public class LoginTestController {
 
-
     @RequestMapping("/student")
     public  void studentLoginTest(ModelMap modelMap,HttpServletResponse response) throws IOException {
         Student student = (Student) modelMap.get("student");
         String username = (String) modelMap.get("username");
-
         if (student!=null) {
             ResultUtil.feedBack(response, "登录了", student, true);
         }

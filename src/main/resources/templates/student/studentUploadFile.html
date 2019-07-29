@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link th:href="@{/css/studentUploadFile.css}" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+    <script>
+
+
+
+        function uploadFile(){
+            var MAX_SIZE = 20480000;
+            var doc = document.getElementById("pdffile");
+            if (doc == null || doc===undefined || doc=="") {
+                alert("please choose a file and try again");
+            }
+            else {
+                var size = doc.files[0].size;
+                if (size > MAX_SIZE) {
+                    alert("The file can't larger than 20M");
+
+                }
+                else
+                document.getElementById("fileForm").submit();
+            }
+        }
+
+
+        $(function () {
+            $("#button").click(function () {
+                if(checkForm()) {
+                    $.post("loginStudent", $("#registForm").serialize(), function (data) {
+                        if (data.flag) {
+
+                            var username = $("#sname").val();
+                            alert("Welcome back "+username + " !");
+
+                            location.href = "/student/index";
+
+
+                        } else {
+                            alert(data.errorMsg);
+                        }
+
+                    });
+
+                }
+                else return;
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <a href="/student/index" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+        <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px;">
+    </a>
+</div>
+
+<div style="width:100%;text-align: center;margin-top:50px; ">
+<p style=" margin: auto; display: block; font-size: 25px; height:40px; width:400px; ">Please upload your file here!</p>
+    <br>
+    <br>
+</div>
+    <div class="bigfileBox" >
+        <div class="innerBox">
+            <form action="/fileupload2" method="post" enctype="multipart/form-data" id="fileForm">
+                <label style=" height: 30px;font-size: 20px; float: left;display: inline-block"> Choose your file: </label>
+                <input type="file" name="upload" id="pdffile" class="fileName"
+                       style="width: 300px; height: 30px;font-size: 18px; display: block; "/>
+            </form>
+
+<br><br><br><br>
+
+
+            <input type="button"  value="uplaod" id="button" onclick="uploadFile()" style="width: 200px; height: 30px;font-size: 2px; display: block; margin: auto"/>
+
+
+
+        </div>
+
+        </div>
+
+</body>
+</html>
