@@ -34,8 +34,7 @@
                     $.post("loginStudent", $("#registForm").serialize(), function (data) {
                         if (data.flag) {
 
-                            var username = $("#sname").val();
-                            alert("Welcome back "+username + " !");
+
 
                             location.href = "/student/index";
 
@@ -67,16 +66,17 @@
 </div>
     <div class="bigfileBox" >
         <div class="innerBox">
-            <form action="/fileupload2" method="post" enctype="multipart/form-data" id="fileForm">
+            <form action="/student/fileUpload2" method="post" enctype="multipart/form-data" id="fileForm" οnkeydοwn="if(event.keyCode==13){return false;}"onSubmit="return false;">
                 <label style=" height: 30px;font-size: 20px; float: left;display: inline-block"> Choose your file: </label>
                 <input type="file" name="upload" id="pdffile" class="fileName"
                        style="width: 300px; height: 30px;font-size: 18px; display: block; "/>
+                <input   name="fdescription" placeholder="Write a description for this file."  autocomplete="open" type="text" id="fdescription" style="width: 600px; height: 30px; font-size: 20px; display: block; margin-top: 40px">
             </form>
 
 <br><br><br><br>
 
 
-            <input type="button"  value="uplaod" id="button" onclick="uploadFile()" style="width: 200px; height: 30px;font-size: 2px; display: block; margin: auto"/>
+            <input type="button"  value="uplaod" id="button" onclick="uploadFile()" style="width: 200px; height: 20px; line-height: 20px;font-size: 20px; display: block; margin: auto"/>
 
 
 

@@ -1,5 +1,4 @@
 package com.dongdong.internship.Controller;
-
 import com.dongdong.internship.bean.ResultInfo;
 import com.dongdong.internship.bean.Student;
 import com.dongdong.internship.mapper.StudentMapper;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
+import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -45,22 +44,49 @@ public class StudentController {
     }
 
 
-
-    @RequestMapping("/CVPage")
-    public String showCV(){
-        return "student/studentCV";
-
-    }
-
-
-
     @RequestMapping("/profilePage")
     public String showProfile(){
         return "student/studentProfile";
 
     }
+
+
+    @RequestMapping("/CVPage")
+    public String showCV(){
+        return "student/studentFiles";
+
+    }
+
+
+
+
+    @RequestMapping("/fileUpload2")
+    public ModelAndView forwardMAV()throws Exception{
+
+        ModelAndView mv = new ModelAndView();
+
+        //手动显式指定使用转发，此时springmvc.xml配置文件中的视图解析器将会失效
+       // mv.setViewName("/fileupload3");
+        mv.setViewName("forward:/fileupload3");
+        return mv;
+    }
+
+
+
+
+
+    @RequestMapping("/fileUpload")
+    public String forwardMAV(HttpServletRequest request)throws Exception{
+     return "forward:/fileupload3";
+    }
+
+
+
     @RequestMapping("/showUploadPage")
-    public String showUploadPage(){
+    public String showUploadPage(ModelMap modelMap){
+        Student student = (Student) modelMap.get("student");
+        System.out.println(student);
+        System.out.println(modelMap.get("username"));
         return "student/studentUploadFile";
 
     }
@@ -86,6 +112,7 @@ public class StudentController {
            ResultUtil.feedBack(response,"find one ",student,true);
            model.addAttribute("student",student);
            model.addAttribute("sid",student.getSid());
+           model.addAttribute("username",student.getSname());
        }
     }
     @RequestMapping("/logOutStudent")
@@ -160,6 +187,7 @@ public class StudentController {
                 sessionStatus.setComplete();
                model.addAttribute("student",student);
                model.addAttribute("sid",student.getSid());
+                model.addAttribute("username",student.getSname());
       ResultUtil.feedBack(response,"profile update successful",student,true);
         }catch (NumberFormatException ex) {
 
@@ -169,11 +197,6 @@ public class StudentController {
 
         }
     }
-
-
-
-
-
     @RequestMapping("/searchByName")
     @ResponseBody
     public String search(){

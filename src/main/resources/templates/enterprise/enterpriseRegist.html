@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link th:href="@{/css/studentRegist.css}" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+
+    <script>
+
+        /*        function checkusername() {
+                    var userName = $("#username").val();
+                    var reg_uername =/^\w{8,20}$/;
+                    if (reg_uername.test(userName)){
+                        $("#username").css("border","");
+                        return true;
+                    }
+                    else{
+                        $("#username").css("border","1px solid red");
+                        return false;
+                    }
+                }*/
+        function checkpassword() {
+            var passWord = $("#password").val();
+            var reg_password =/^\w{5,20}$/;
+            if (reg_password.test(passWord)){
+
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        function checkEmail(){
+            var Email = $("#email").val();
+            var reg_email = /^[a-z0-9]+@[a-z0-9]+(\.[a-z]+){1,5}$/;
+            if(reg_email.test(Email)){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }
+
+        function checkForm(){
+            var userName = $("#ename").val();
+            var reg_uername =/^\w{3,20}$/;
+            var errorInfo;
+            if (reg_uername.test(userName)){
+                if( checkpassword()){
+                    if(checkEmail()) {
+
+                        if ( $("#website").val() !== "" ) {
+                            return true;
+
+                        } else {
+                            errorInfo = "Complete all your information please ";
+                            alert(errorInfo);
+                            return false;
+                        }
+
+                    }
+                    else {
+                        errorInfo = "Email format error!!!!!\r\n"
+                        alert(errorInfo);
+                        return false;
+
+                    }
+
+                }
+                else{
+                    errorInfo = "Password format error\r\nPlease input 8-20 character\nNo case-sensitive"
+                    alert(errorInfo);
+                    return false;
+                }
+            }
+            else{
+                errorInfo = "Username format error\r\nPlease input 8-20 character\r\nNo case-sensitive" ;
+                alert(errorInfo);
+
+                return false;
+            }
+
+
+
+        }
+
+        $(function () {
+
+
+            $("#button").click(function () {
+                if(checkForm()) {
+                    $.post("/enterprise/registEnterprise", $("#registForm").serialize(), function (data) {
+                        if (data.flag) {
+                            location.href = "/enterprise/loginPage";
+                            alert("Congratulation!  Please Log in now! ");
+                        } else {
+                            alert(data.errorMsg);
+                        }
+
+                    });
+
+                }
+                else return;
+            });
+
+
+        });
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <a href="/student/index" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+        <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px; "></a>
+
+
+</div>
+
+<div class="bigBox">
+    <div class="innerBox">
+        <div class="buttonBox">
+            <a class="signIn" href="registPage"> Register </a><!--<span>|</span>-->
+            <a class="logIn"  href="loginPage"> Log in </a>
+        </div>
+
+        <form id="registForm" name="registForm" class="signForm" method="post" >
+            <div class="divname">
+                <label class="username">Username</label>
+                <input type="text" class="Inputname" id="ename" name="ename">
+            </div>
+            <div class="divpassword">
+                <label class="password">Password</label>
+                <input type="text" class="Inputpassword" id="password" name="password">
+            </div>
+            <div>
+                <label >Email</label>
+                <input type="text"  id="email" name="email">
+            </div>
+            <div>
+                <label >Website</label>
+                <input type="text"  id="website" name="website">
+            </div>
+
+            <div class="clean"> </div>
+            <div class="divbutton">
+                <input type="button" id ="button"  name="button" value="Register"
+                       style="
+            background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            font-size: 22px;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin: 0 auto 20px;
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;
+
+
+
+              }">
+
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

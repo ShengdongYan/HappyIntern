@@ -21,7 +21,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").order(1).excludePathPatterns("/static/*","/css/*","/js/*","/img/*","/mapper/*", "/PDFfile/*");; //order是配置拦截器的顺序，顺序越小，越先
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").order(1).excludePathPatterns("/static/*","/css/*","/js/*","/img/*","/mapper/*", "/PDFFile/*");
+        //order是配置拦截器的顺序，顺序越小，越先
 
     }
 
@@ -38,7 +39,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/img/");
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/mapper/**").addResourceLocations("classpath:/static/mapper/");
-        registry.addResourceHandler("/PDFfile/**").addResourceLocations("classpath:/PDFfile/");
+       // registry.addResourceHandler("/PDFFile/**").addResourceLocations("classpath:/PDFFile/");
     }
 
 

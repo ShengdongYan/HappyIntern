@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/studentProfile.css">
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+
+    <script>
+
+
+        /*        function checkusername() {
+                    var userName = $("#username").val();
+                    var reg_uername =/^\w{8,20}$/;
+                    if (reg_uername.test(userName)){
+                        $("#username").css("border","");
+                        return true;
+                    }
+                    else{
+                        $("#username").css("border","1px solid red");
+                        return false;
+                    }
+                }*/
+        function checkpassword() {
+            var passWord = $("#password").val();
+            var reg_password =/^\w{8,20}$/;
+            if (reg_password.test(passWord)){
+
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        function checkEmail(){
+            var Email = $("#smail").val();
+            var reg_email = /^[a-z0-9]+@[a-z0-9]+(\.[a-z]+){1,5}$/;
+            if(reg_email.test(Email)){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }
+
+        function checkForm(){
+            var userName = $("#sname").val();
+            var reg_uername =/^\w{8,20}$/;
+            var errorInfo;
+            if (reg_uername.test(userName)){
+                if( checkpassword()){
+                    if(checkEmail()) {
+
+                        if ($("#sage").val() !== "" && $("#supname").val() !== "" && $("#school").val() !== "") {
+                            return true;
+
+                        } else {
+                            errorInfo = "Complete all your information please ";
+                            alert(errorInfo);
+                            return false;
+                        }
+
+                    }
+                    else {
+                        errorInfo = "Email format error!!!!!\r\n"
+                        alert(errorInfo);
+                        return false;
+
+                    }
+
+                }
+                else{
+                    errorInfo = "Password format error\r\nPlease input 8-20 character\nNo case-sensitive"
+                    alert(errorInfo);
+                    return false;
+                }
+            }
+            else{
+                errorInfo = "Username format error\r\nPlease input 8-20 character\r\nNo case-sensitive" ;
+                alert(errorInfo);
+
+                return false;
+            }
+
+
+
+        }
+
+        $(function () {
+
+            $.post("/loginTest/student", $(), function (data) {
+                if (data.flag) {
+                    var username = data.data.sname;
+                    var password = data.data.password;
+                    var school = data.data.school;
+                    var supervisor = data.data.supname;
+                    var mail = data.data.smail;
+                    var  age = data.data.sage;
+
+                    alert(username);
+                    $("#username").html( "<a href='' id='username'>"+username+"</a>");
+
+                    $("#sname").val(username);
+                    $("#password").val(password);
+                    $("#school").val(school);
+                    $("#supname").val(supervisor);
+                    $("#smail").val(mail);
+                    $("#sage").val(age);
+
+                } else {
+                    /* alert(data.errorMsg);*/
+                }
+
+            });
+
+
+
+            $("#saveButton").click(function () {
+                if (checkForm()) {
+                    $.post("/student/updateStudent", $("#registForm").serialize(), function (data) {
+                        if (data.flag) {
+                            alert("Sucessful, you should login now");
+                            location.href = "/student/index";
+
+                        } else {
+                            alert(data.errorMsg);
+                        }
+
+                    });
+
+                }
+                else return;
+            });
+
+            $("#logOutButton").click(function () {
+                if (checkForm()) {
+                    $.post("/student/logOutStudent", $(), function () {
+                        location.href = "/student/index";
+
+                    });
+                }
+            });
+
+            $("#manageCV").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/CVPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+
+            $("#Profile").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/profilePage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <div class="container">
+        <a href="/student/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
+        <div class="topbar-left">
+            <span>|</span>
+            <a href=""  class="advertisement" >Internships</a><span>|</span>
+            <a  id="manageCV">ManageFile</a> <span>|</span>
+            <a  id="applyHistory">ApplyHistory</a><span>|</span>
+            <a  id="WeeklyReport">WeeklyReport</a> <span>|</span>
+            <a  id="Profile"  style="    border-bottom: 5px solid #EEEEEE;">Profile</a> <span>|</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/student/loginPage" id="username">Login</a>
+        </div>
+    </div>
+</div>
+
+<div class="bigBox">
+    <div class="innerBox">
+        <!--        <div class="buttonBox">
+                    <a class="signIn" href="registPage"> Register </a>&lt;!&ndash;<span>|</span>&ndash;&gt;
+                    <a class="logIn"  href="loginPage"> Log in </a>
+                </div>-->
+
+
+
+        <form id="registForm" name="registForm" class="signForm" method="post" >
+            <div class="divname">
+                <label class="username">Username</label>
+                <input type="text" class="Inputname" id="sname" name="sname">
+            </div>
+            <div class="divpassword">
+                <label class="password">Password</label>
+                <input type="text" class="Inputpassword" id="password" name="password">
+            </div>
+            <div>
+                <label >Email</label>
+                <input type="text"  id="smail" name="smail">
+            </div>
+            <div>
+                <label >Age</label>
+                <input type="text" id="sage" name="sage">
+            </div>
+
+            <div>
+                <label >School</label>
+                <input type="text"  id="school" name="school">
+            </div>
+            <div>
+                <label >Supervisor</label>
+                <input type="text" id="supname" name="supname" >
+            </div>
+
+            <div class="divbutton">
+                <input type="button" id ="saveButton"  name="button" value="save"
+                       style="
+            background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            font-size: 22px;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin: 0 auto 20px;
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;
+
+
+
+              }">
+
+            </div>
+            <div class="clean">
+                <input type="button" id ="logOutButton"  name="button" value="Logout"
+                       style="
+            background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            font-size: 22px;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin: 0 auto 20px;
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;
+
+              }"></div>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
