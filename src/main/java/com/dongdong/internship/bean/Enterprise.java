@@ -12,7 +12,7 @@ public class Enterprise {
     private  String password;
     private  String email;
 
-    public void setEdi(Integer eid) {
+    public void setEid(Integer eid) {
         this.eid = eid;
     }
 

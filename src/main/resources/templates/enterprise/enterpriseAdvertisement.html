@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link th:href="@{/css/studentLogin.css}" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+    <script>
+        $(function () {
+
+                    $.post("/showAdvertisement", $(), function (data) {
+                        if (data.flag) {
+                            var advertisement = data.data;
+                            alert("Welcome back " + advertisement.aid + " !");
+
+                        } else {
+                            alert(data.errorMsg);
+                        }
+
+                    });
+
+
+            $("#toplogo").click(function () {
+                $.post("/loginTest/enterprise", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/enterprise/index";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+        });
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <a id="toplogo" STYLE="text-align: center; display: block; width: 120px;margin: auto" >
+        <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px;">
+    </a>
+
+</div>
+
+
+
+
+<div style="text-align: center; width: 100%; display: block;background: #dddddd;border:1px solid #70DB55;">
+    <div class="advertise">
+    <p  class="title" id="title" name="title" placeholder="Write a title for your advertisement."  autocomplete="open"  style="width: 700px; height: 30px; font-size: 20px; display: block; margin-top: 15px;margin-bottom: 10px;"></p>
+        <div class="property">
+
+        </div>
+    <div id='text' name="content" placeholder="Write content for this advertisement" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:500px;font-size: 20px;margin-bottom: 30px "></div>
+
+</div>
+</div>
+
+</body>
+</html>

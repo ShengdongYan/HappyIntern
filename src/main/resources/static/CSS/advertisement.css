@@ -1,0 +1,54 @@
+
+body, ul, li{
+    margin: 0;
+    padding: 0; /* 去除白边*/
+
+    font: .8em Arial, Tahoma, Verdana;
+
+}
+ul{
+    list-style-type: none;
+}
+body{
+    font: 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    height: 1000px;
+    background: #f5f7fa;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+}
+
+.topbar{
+
+    background-color: #095bbc;
+    height: 60px;
+    width: 100%;
+    border: 2px solid #095bbc;
+    box-shadow:-5px -5px 10px rgba(0,0,0,.2) inset;
+    text-align: center;
+}
+
+
+.topbar a{
+
+    display: block;
+    margin-top: 5px;
+    color: lightcoral;
+    font-size: 28px
+}
+
+
+.advertise{
+    background: #fff;
+    margin: auto;
+    width: 900px;
+    border:  1px solid #42b983;
+    height: 800px;
+}
+
+.property{
+    font: bold 14px/26px "Open Sans";
+     border: 1px solid #cfddf3;
+     border-radius: 4px;
+    margin: 0;
+    padding: 15px 0;
+    background: #f0f4fa;
+}

@@ -4,7 +4,7 @@
 <mapper namespace="com.dongdong.internship.mapper.EnterpriseMapper">
 
     <select id="queryEnterpriseByNamePassword" resultType="enterprise" >
-        select * from enterprise where  ename = #{sname} and password = #{password}
+        select * from enterprise where  ename = #{ename} and password = #{password}
     </select>
 
 
@@ -20,6 +20,19 @@
         VALUES
             ( #{website},#{ename}, #{password}, #{email})
     </insert>
+
+    <update id="updateEnterprise" parameterType="enterprise" >
+        update enterprise set
+                           ename = #{ename},
+                           password = #{password},
+                           website = #{website},
+                           email = #{email}
+        where  eid = #{eid}
+
+
+    </update>
+
+
 
 
 

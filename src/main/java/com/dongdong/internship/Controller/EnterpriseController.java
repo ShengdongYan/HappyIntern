@@ -2,18 +2,25 @@ package com.dongdong.internship.Controller;
 
 import com.dongdong.internship.bean.Enterprise;
 import com.dongdong.internship.bean.ResultInfo;
+import com.dongdong.internship.bean.Student;
 import com.dongdong.internship.mapper.EnterpriseMapper;
 import com.dongdong.internship.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.sun.tools.corba.se.idl.InterfaceGen;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sound.midi.Soundbank;
+import javax.xml.transform.Source;
 import java.io.IOException;
 
 /**
@@ -24,8 +31,8 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/enterprise")
-@SessionAttributes(value= {"enterprise","eid"},types=
-        {com.dongdong.internship.bean.Enterprise.class,String.class})
+@SessionAttributes(value= {"enterprise","eid","aid"},types=
+        {com.dongdong.internship.bean.Enterprise.class,String.class,Integer.class})
 public class EnterpriseController {
 
 
@@ -50,17 +57,28 @@ public class EnterpriseController {
     }
 
 
+
     @RequestMapping("/profilePage")
-    public String showProfile(){
+    public String showProfile(@Param("aid")Integer aid, Model model){
+        System.out.println("这个AID 是"+aid);
+        model.addAttribute(aid);
         return "enterprise/enterpriseProfile";
 
     }
 
 
-    @RequestMapping("/myAdvertisement")
-    public void showadvertisements(){
 
+
+
+
+
+    @RequestMapping("/showPostPage")
+    public  String showPost(ModelMap modelMap){
+        Enterprise enterprise= (Enterprise) modelMap.get("student");
+        System.out.println(enterprise);
+        return "enterprise/enterprisePostPage";
     }
+
 
 
     @RequestMapping("/loginEnterprise")
@@ -94,7 +112,7 @@ public class EnterpriseController {
         else {
             try {
                 ResultInfo resultInfo = new ResultInfo();
-                  Enterprise enterprise = new Enterprise();
+                Enterprise enterprise = new Enterprise();
                 enterprise.setEname(request.getParameter("ename"));
                 enterprise.setEmail(request.getParameter("email"));
                 enterprise.setPassword(request.getParameter("password"));
@@ -117,6 +135,53 @@ public class EnterpriseController {
                 ResultUtil.feedBack(response, errorMsg, null, false);
             }
         }
+    }
+
+    @RequestMapping("/updateEnterprise")
+    public void updateEnterprise(Model model, HttpServletRequest request, ModelMap modelMap, SessionStatus sessionStatus, HttpServletResponse response) throws IOException {
+        Enterprise enterprise = enterpriseMapper.queryEnterpriseByName((String)modelMap.get("ename"));
+        if(enterprise!=null){
+            ResultUtil.feedBack(response,"The user has existes \r\n Please try another username \r\n Or try to find your account by your email",null,false);
+        }
+
+        else {
+            try {
+
+                enterprise = new Enterprise();
+                enterprise.setEid((Integer) modelMap.get("eid"));
+                enterprise.setWebsite(request.getParameter("website"));
+                enterprise.setEmail(request.getParameter("email"));
+                enterprise.setEname(request.getParameter("ename"));
+                enterprise.setPassword(request.getParameter("password"));
+                enterpriseMapper.updateEnterprise(enterprise);
+                sessionStatus.setComplete();
+                model.addAttribute("enterprise",enterprise);
+                model.addAttribute("eid",enterprise.getEid());
+                ResultUtil.feedBack(response,"profile update successful",enterprise,true);
+            }catch (NumberFormatException ex) {
+
+                ex.printStackTrace();
+                ResultUtil.feedBack(response, "profile update fail", null, false);
+            }
+        }
+
+
+    }
+
+
+
+    @RequestMapping("/logOutEnterprise")
+    public void studentLogOut(SessionStatus sessionStatus, HttpServletResponse response) throws IOException {
+        sessionStatus.setComplete();
+        ResultUtil.feedBack(response,"logout successful",null,true);
+
+    }
+
+
+    @RequestMapping("/uploadAdvertisement")
+    public String uploadImg(){
+      return  "forward:/advertisementUpload";
+
     }
 
 

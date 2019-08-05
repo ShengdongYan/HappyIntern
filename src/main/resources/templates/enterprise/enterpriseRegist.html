@@ -25,7 +25,6 @@
             var passWord = $("#password").val();
             var reg_password =/^\w{5,20}$/;
             if (reg_password.test(passWord)){
-
                 return true;
             }
             else{
@@ -107,16 +106,26 @@
             });
 
 
+
+            $("#toplogo").click(function () {
+                $.post("/loginTest/enterprise", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/enterprise/index";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
         });
 
     </script>
 </head>
 <body>
 <div class="topbar">
-    <a href="/student/index" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+    <a id="toplogo" STYLE="text-align: center; display: block; width: 120px;margin: auto">
         <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px; "></a>
-
-
 </div>
 
 <div class="bigBox">
@@ -166,16 +175,10 @@
             -ms-touch-action: manipulation;
             line-height: 1.53334;
             border-radius: 4px;
-
-
-
               }">
-
             </div>
-
         </form>
     </div>
-
 </div>
 
 </body>

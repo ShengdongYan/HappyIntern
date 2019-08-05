@@ -28,8 +28,6 @@
         }
         $(function () {
 
-
-
     $.post("/listFiles", $(), function (data) {
 
         var filelist = data.data;
@@ -45,7 +43,6 @@
             var time = filelist[i].createdate;
             var fdescription = filelist[i].fdescription;
             var fid = filelist[i].fid;
-
 
 /*
         <li>

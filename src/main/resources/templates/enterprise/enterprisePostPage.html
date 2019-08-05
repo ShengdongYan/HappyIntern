@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link th:href="@{/css/studentUploadFile.css}" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+    <script>
+
+        function textareaToData(str){
+            var reg=new RegExp("\n","g");
+            var regSpace=new RegExp(" ","g");
+
+            str = str.replace(reg,"<br>");
+            str = str.replace(regSpace,"&nbsp;");
+
+            return str;
+        }
+
+
+        function uploadFile(){
+            var MAX_SIZE = 5242880;
+            var doc = document.getElementById("pdffile");
+            if (doc == null || doc===undefined || doc=="") {
+                alert("please choose a file and try again");
+            }
+            else {
+                var size = doc.files[0].size;
+                if (size > MAX_SIZE) {
+                    alert("The file can't larger than 5M");
+
+                }
+                else {
+
+                    textareaToData($('#text').val());
+                    document.getElementById("fileForm").submit();
+                }
+            }
+        }
+
+        $(function () {
+        });
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <a href="/enterprise/index" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+        <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px;">
+    </a>
+</div>
+
+<div style="width:100%;text-align: center;margin-top:10px;border-bottom: 1px dashed #333333;margin-bottom: 30px">
+    <p style=" margin: auto; display: block; font-size: 25px; height:40px; width:600px; ">Please edit your advertisement here!</p>
+
+</div>
+<div class="bigfileBox" >
+    <div class="innerBox">
+        <form action="/enterprise/uploadAdvertisement" method="post" enctype="multipart/form-data" id="fileForm" οnkeydοwn="if(event.keyCode==13){return false;}"onSubmit="return false;"style="width: 800px">
+            <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;margin-right: 20px;"> Choose your logo img: </label>
+            <input type="file" name="upload" id="pdffile" class="fileName"
+                   style="width: 300px; height: 30px;font-size: 18px; display: block;"/>
+            <input   name="title" placeholder="Write a title for your advertisement."  autocomplete="open" type="text" id="fdescription" style="width: 700px; height: 30px; font-size: 20px; display: block; margin-top: 15px;margin-bottom: 10px;">
+            <textarea id='text' name="content" placeholder="Write content for this advertisement" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:500px;font-size: 20px;margin-bottom: 30px "></textarea>
+            <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;width: 300px;"> Choose the application deadline: </label>
+            <input type="date" name="enddate" STYLE="width: 140PX;font-size: 15px;display: block;margin-left:20px">
+
+            <br>
+            <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;"> Choose workplace:</label>
+            <input type="text" name="workplace" STYLE="width: 240PX;font-size: 15px;display: block;margin-left:20px">
+
+            <br>
+            <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;"> Property(Full/PartTime): </label>
+            <input type="text" name="feature" STYLE="width: 140PX;font-size: 15px;display: block;margin-left:20px;">
+
+            <br>
+            <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;"> Contact way: </label>
+            <input type="text" name="contact" STYLE="width: 140PX;font-size: 15px;display: block;margin-left:20px;">
+            <br>
+            <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;"> Salary: </label>
+            <input type="text" name="salary" STYLE="width: 140PX;font-size: 15px;display: block;margin-left:20px;">
+
+        </form>
+
+        <br>
+
+        <div style="text-align: center">
+        <input type="button"  value="post" id="button" onclick="uploadFile()"  style="
+            background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            font-size: 22px;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin:0  auto ;
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;
+
+              }"/>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

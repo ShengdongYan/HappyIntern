@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/studentindex.css}" rel="stylesheet" type="text/css"/> <!--//相当于又从服务器请求了一次资源，会通过拦截器-->
+    <link th:href="@{/css/enterpriseIndex.css}" rel="stylesheet" type="text/css"/> <!--//相当于又从服务器请求了一次资源，会通过拦截器-->
     <script src="/js/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
     <title>HappyIntern</title>
@@ -18,10 +18,12 @@
                 }
             });
 
+
+
             $("#MyAdvertisement").click(function () {
                 $.post("/loginTest/enterprise", $(), function (data) {
                     if (data.flag) {
-                        location.href = "/enterprise/myAdvertisement";
+                        location.href = "/enterprise/index";
                     } else {
                         alert(data.errorMsg);
                     }
@@ -35,7 +37,7 @@
             $("#Profile").click(function () {
                 $.post("/loginTest/enterprise", $(), function (data) {
                     if (data.flag) {
-                        location.href = "/student/profilePage";
+                        location.href = "/enterprise/profilePage";
                     } else {
                         alert(data.errorMsg);
                     }
@@ -45,6 +47,72 @@
             });
 
 
+
+            $("#applyHistory").click(function () {
+                $.post("/loginTest/enterprise", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/enterprise/applyHistory";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#button").click(function () {
+                $.post("/loginTest/enterprise", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/enterprise/showPostPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+
+            $.post("/listAdvertisement", $(), function (data) {
+
+                var filelist = data.data;
+
+                //2.列表数据展示
+                var route_lis = "";
+
+                for (var i = 0; i < filelist.length; i++) {
+                    var imgpath = filelist[i].imgpath;
+                    var title = filelist[i].title;
+                    var aid = filelist[i].aid;
+
+
+        /*        <li id="1">
+                        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+                        <span class="logo">
+                        <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+                        </span>
+                        <p class="text">Jobs at hkjlghjklhjk  cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbh</p>
+                    </a>
+
+                    </li>*/
+
+                    var li = '<li>\n' +
+                        '      <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/myAdvertisement?aid='+aid+'">\n' +
+                        '                            <span class="logo">\n' +
+                        '                             <img src="'+imgpath+'" alt="Neptune jobs">\n' +
+                        '                           </span>\n' +
+                        '        <p class="text">'+title+'</p>\n' +
+                        '                           </a>\n' +
+                        '                    </li>';
+                    route_lis += li;
+                }
+                $("#advertiseList").html(route_lis);
+
+                //定位到页面顶部
+                window.scrollTo(0,0);
+            });
+
         });
 
 
@@ -52,12 +120,10 @@
 <body>
 <div class="topbar">
     <div class="container">
-        <a href="/student/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
+        <a href="/enterprise/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
         <div class="topbar-left">
             <span>|</span>
-            <a href=""  class="advertisement" style="    border-bottom: 5px solid #EEEEEE;
-           ">Internships</a><span>|</span>
-            <a  id="MyAdvertisement">MyAdvertisement</a> <span>|</span>
+            <a  id="MyAdvertisement" style="    border-bottom: 5px solid #EEEEEE; ">MyAdvertisement</a> <span>|</span>
             <a  id="applyHistory">ApplyHistory</a><span>|</span>
             <a  id="Profile">Profile</a> <span>|</span>
         </div>
@@ -67,17 +133,100 @@
     </div>
 </div>
 
-<div class="searchbox">
-    <div class="searchbar">
-        <div class="logo">
-            <a href="/"><img src="/img/favicon.png" alt=""></a>
-        </div>
-        <div class="search">
-            <input name="" id="search_input"  type="text" placeholder="e.g.web developer" class="search_input" autocomplete="off">
-            <a href="javascript:;" id="search-button" class="search-button">search</a>
-        </div>
-    </div>
+
+
+<div id="top-panel" style="width: 100%;display:block;text-align: center;border-bottom: 1px dashed #555555">
+
+    <label style="font-size: 25px; font-weight:700;margin: auto; display: block;width: 800px;text-align: center;">Released Advertisements</label>
+</div>
+<div style="display: block">
+<ul class="advertiseList"id="advertiseList">
+ <!--   <li id="1">
+        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+            <span class="logo">
+                <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+            </span>
+            <p class="text">Jobs at hkjlghjklhjk  cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbh</p>
+        </a>
+
+    </li>
+
+
+    <li id="2">
+        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+            <span class="logo">
+                <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+            </span>
+            <p class="text">Jobs at rtyuiopfghjkl hgjknlm cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbhjfvygbhnj</p>
+
+        </a>
+
+    </li>
+    <li id="3">
+        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+            <span class="logo">
+                <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+            </span>
+            <p class="text">Jobs at rtyuiopfghjkl hgjknlm cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbhjfvygbhnj</p>
+
+        </a>
+
+    </li>
+    <li id="4">
+        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+            <span class="logo">
+                <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+            </span>
+            <p class="text">Jobs at rtyuiopfghjkl hgjknlm cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbhjfvygbhnj</p>
+
+        </a>
+
+    </li>
+    <li id="5">
+        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+            <span class="logo">
+                <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+            </span>
+            <p class="text">Jobs at rtyuiopfghjkl hgjknlm cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbhjfvygbhnj</p>
+
+        </a>
+
+    </li>
+    <li id="6">
+        <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+            <span class="logo">
+                <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+            </span>
+            <p class="text">Jobs at rtyuiopfghjkl hgjknlm cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbhjfvygbhnj</p>
+
+        </a>
+
+    </li>-->
+
+</ul>
 </div>
 
+<div class="buttonbar" style="text-align: center; display: inline-block;width: 100%;margin-top: 80px" >
+    <input type="button" value="Post another advertisement"  id="button" class="button" style="
+                    background-color: #e84188;
+    float: none;
+    max-width: 350px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #333;
+    border: 1px solid #d6d6d6;
+    height: 2.8rem;
+    box-sizing: border-box;
+    margin: auto;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    line-height: 1.53334;
+    border-radius: 4px;
+    padding: 8px 12px;
+">
+</div>
 </body>
 </html>

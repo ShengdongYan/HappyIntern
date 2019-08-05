@@ -108,7 +108,7 @@ public class StudentController {
            ResultUtil.feedBack(response,"Wrong username or password ",null,false);
        }
        else {
-           System.out.println("登录成功");
+          // System.out.println("登录成功");
            ResultUtil.feedBack(response,"find one ",student,true);
            model.addAttribute("student",student);
            model.addAttribute("sid",student.getSid());
@@ -205,7 +205,6 @@ public class StudentController {
         student = studentMapper.queryStudentByName(sname);
         return student.toString();
     }
-
     public static Student makeStudnt(){
        Student student = new Student();
         student.setSage(26);
