@@ -6,8 +6,6 @@
     <select id="queryEnterpriseByNamePassword" resultType="enterprise" >
         select * from enterprise where  ename = #{ename} and password = #{password}
     </select>
-
-
     <select id="queryEnterpriseByName" resultType="enterprise"  parameterType="String">
         select * from enterprise where  ename = #{ename}
     </select>
@@ -31,8 +29,6 @@
 
 
     </update>
-
-
 
 
 

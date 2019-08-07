@@ -2,8 +2,7 @@ package com.dongdong.internship.Controller;
 
 import com.dongdong.internship.bean.Advertisement;
 import com.dongdong.internship.bean.Enterprise;
-import com.dongdong.internship.bean.PDFFile;
-import com.dongdong.internship.bean.Student;
+
 import com.dongdong.internship.mapper.AdvertisementMapper;
 import com.dongdong.internship.util.ResultUtil;
 import org.apache.ibatis.annotations.Param;
@@ -18,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -68,6 +67,7 @@ public class AdvertisementConbtroller {
         String fplace = "/logo/"+filename;
         advertisement.setImgpath(fplace);
         advertisement.setContent(request.getParameter("content"));
+        advertisement.setCompanyDescription(request.getParameter("companyDescription"));
         String enddate = request.getParameter("enddate");
         System.out.println(enddate);
         advertisement.setEnddate(enddate);

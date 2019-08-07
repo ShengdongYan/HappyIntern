@@ -10,9 +10,11 @@
 
         function textareaToData(str){
             var reg=new RegExp("\n","g");
+            var regg = new RegExp("\r\n","g");
             var regSpace=new RegExp(" ","g");
 
             str = str.replace(reg,"<br>");
+            str = str.replace(regg,"<br>");
             str = str.replace(regSpace,"&nbsp;");
 
             return str;
@@ -33,7 +35,12 @@
                 }
                 else {
 
-                    textareaToData($('#text').val());
+
+
+                    $("#companyDescription").val(textareaToData($('#companyDescription').val()));
+                    $("#text").val(textareaToData($('#text').val()));
+
+
                     document.getElementById("fileForm").submit();
                 }
             }
@@ -62,7 +69,9 @@
             <input type="file" name="upload" id="pdffile" class="fileName"
                    style="width: 300px; height: 30px;font-size: 18px; display: block;"/>
             <input   name="title" placeholder="Write a title for your advertisement."  autocomplete="open" type="text" id="fdescription" style="width: 700px; height: 30px; font-size: 20px; display: block; margin-top: 15px;margin-bottom: 10px;">
+            <textarea id='companyDescription' name="companyDescription" placeholder="Write description for yourcompany" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:200px;font-size: 20px;margin-bottom: 30px "></textarea>
             <textarea id='text' name="content" placeholder="Write content for this advertisement" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:500px;font-size: 20px;margin-bottom: 30px "></textarea>
+
             <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;width: 300px;"> Choose the application deadline: </label>
             <input type="date" name="enddate" STYLE="width: 140PX;font-size: 15px;display: block;margin-left:20px">
 

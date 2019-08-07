@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Mapper
 public interface FileMapper {
+
     public void  addFile(PDFFile pdf);
     public void  deleteFile(Integer fid);
     public PDFFile queryFileByPlace(String filePlace);

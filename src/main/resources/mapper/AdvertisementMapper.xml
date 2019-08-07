@@ -6,9 +6,9 @@
     <insert id="addAdvertisement" parameterType="advertisement" >
         INSERT INTO
             advertisement
-            (eid,title,imgpath,content,enddate,workplace,contact,feature,salary)
+            (eid,title,imgpath,content,enddate,workplace,contact,feature,salary,companyDescription)
         VALUES
-            ( #{eid},#{title}, #{imgpath}, #{content},#{enddate},#{workplace},#{contact},#{feature},#{salary})
+            ( #{eid},#{title}, #{imgpath}, #{content},#{enddate},#{workplace},#{contact},#{feature},#{salary},#{companyDescription})
     </insert>
     <select id="queryAdvertisementByEid" resultType="advertisement">
         select * from advertisement where eid=#{eid}

@@ -16,6 +16,15 @@ public class Advertisement {
     private  String salary;
     private  String contact;
     private  String feature;
+    private  String companyDescription;
+
+    public void setCompanyDescription(String companyDescription) {
+        this.companyDescription = companyDescription;
+    }
+
+    public String getCompanyDescription() {
+        return companyDescription;
+    }
 
     @Override
     public String toString() {
@@ -27,9 +36,10 @@ public class Advertisement {
                 ", enddate='" + enddate + '\'' +
                 ", imgpath='" + imgpath + '\'' +
                 ", workplace='" + workplace + '\'' +
-                ", salary=" + salary +
+                ", salary='" + salary + '\'' +
                 ", contact='" + contact + '\'' +
                 ", feature='" + feature + '\'' +
+                ", companyDescription='" + companyDescription + '\'' +
                 '}';
     }
 

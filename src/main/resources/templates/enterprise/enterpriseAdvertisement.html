@@ -2,17 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link th:href="@{/css/studentLogin.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/advertisement.css}" rel="stylesheet" type="text/css"/>
     <script src="/js/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
     <title>HappyIntern</title>
     <script>
+
+        function toTextarea(str){
+            var reg=new RegExp("<br>","g");
+            var regSpace=new RegExp("&nbsp;","g");
+
+            str = str.replace(reg,"\n");
+            str = str.replace(regSpace," ");
+
+            return str;
+        }
+        window.scroll=function(){
+
+            var s = document.body.scrollTop || document.documentElement.scrollTop
+            document.getElementById('d1').style.top=s+200;//通过scrollTop设置滚动到100位置
+
+        }
+
+
         $(function () {
+
+
 
                     $.post("/showAdvertisement", $(), function (data) {
                         if (data.flag) {
                             var advertisement = data.data;
-                            alert("Welcome back " + advertisement.aid + " !");
+                            $("#title").html(advertisement.title);
+                            $("#content").html(advertisement.companyDescription+advertisement.content);
+                            $("#salary").html("Salary: "+advertisement.salary);
+                            $("#workplace").html("Workplace: "+advertisement.workplace);
+                            $("#enddate").html("Deadline: "+advertisement.enddate);
+                            $("#property").html("Property: "+advertisement.feature);
+                            $("#contactway").html("ContactWay: " +advertisement.contact);
 
                         } else {
                             alert(data.errorMsg);
@@ -47,18 +73,55 @@
 </div>
 
 
-
-
-<div style="text-align: center; width: 100%; display: block;background: #dddddd;border:1px solid #70DB55;">
+<div style="/*text-align: center;*/ width: 100%; display: block;border:1px solid #70DB55;">
     <div class="advertise">
-    <p  class="title" id="title" name="title" placeholder="Write a title for your advertisement."  autocomplete="open"  style="width: 700px; height: 30px; font-size: 20px; display: block; margin-top: 15px;margin-bottom: 10px;"></p>
+    <p  class="title" id="title" name="title" placeholder="Write a title for your advertisement."  autocomplete="open"  style="margin: auto; height: 50px; font-size: 25px; display: block; text-align: center;padding-top: 20px;font-weight: 800px"></p>
         <div class="property">
-
+             <span id="salary" style="width:400px; height: 30px;float: left;display: block;font-size: 20px;text-align: left;padding-left: 20px"></span>
+            <span id="workplace" style="width:400px; height: 30px;float: left;display: block;font-size: 20px;text-align: left;padding-left: 20px"></span>
+           <span id="property" style="width:400px; height: 30px;float: left;display: block;font-size: 20px;text-align: left;padding-left: 20px"></span>
+          <span id="enddate" style="width:400px; height: 30px;float: left;display: block;font-size: 20px;text-align: left;padding-left: 20px"></span>
         </div>
-    <div id='text' name="content" placeholder="Write content for this advertisement" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:500px;font-size: 20px;margin-bottom: 30px "></div>
+    <div id='content' name="content"  style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;font-size: 16px;margin-bottom: 30px; text-align: left;  word-wrap : break-word ;word-break : break-all ;"></div>
+   <div style=" text-align: center;width: 100%; font-size: 20px; font-weight:700;color: #70DB55;background: #555555" id="contactway"></div>
+</div>
+    <div class="leftBox" style="position: fixed;top: 300px;display: inline-block; float:right; width: 130px; height: 120px;background: #FFFFFF" id="butBox">
+         <a href="" style="width: 100%; font-size: 16px;  background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin: 0 auto 20px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;"> delete</a>
+        <a href="" style="width: 100%; font-size: 16px;  background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin: 0 auto 20px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;"> delete</a>
+    </div>
 
 </div>
-</div>
+
 
 </body>
 </html>
