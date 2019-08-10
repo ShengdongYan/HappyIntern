@@ -1,7 +1,8 @@
 package com.dongdong.internship.mapper;
 
-import com.dongdong.internship.bean.PDFFile;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,9 +14,8 @@ import java.util.List;
 
 @Mapper
 public interface InterestMapper {
-
-    public void  addInterest(Integer sid,String interest);
-    public  List<String> queryInterest(Integer sid);
+    public void  addinterest(@Param("sname") String sname, @Param("interest") String interest);
+    public  List<String> queryInterest(String  sname);
 
 
 }

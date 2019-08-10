@@ -45,7 +45,7 @@ body{
     margin: auto;
     display: block;
     width: 640px;
-    height: 655px;
+  /*  height: 655px;*/
     border:1px solid lightblue;
     background: #fff;
 

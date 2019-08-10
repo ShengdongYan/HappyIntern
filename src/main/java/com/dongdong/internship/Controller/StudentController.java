@@ -1,6 +1,9 @@
 package com.dongdong.internship.Controller;
+import com.dongdong.internship.bean.Advertisement;
 import com.dongdong.internship.bean.ResultInfo;
 import com.dongdong.internship.bean.Student;
+import com.dongdong.internship.mapper.AdvertisementMapper;
+import com.dongdong.internship.mapper.InterestMapper;
 import com.dongdong.internship.mapper.StudentMapper;
 import com.dongdong.internship.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -94,6 +101,11 @@ public class StudentController {
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private InterestMapper interestMapper;
+
+    @Autowired
+    private AdvertisementMapper advertisementMapper;
 
 
 
@@ -146,6 +158,13 @@ public class StudentController {
                 student.setSage(Integer.parseInt(request.getParameter("sage")));
                 student.setSchool(request.getParameter("school"));
                 studentMapper.registStudent(student);
+
+                List<String> interests = Arrays.asList(request.getParameterValues("interests"));
+                for (String s : interests){
+                    System.out.println("这里是注册的地方，感兴趣的有  "+ s);
+                    interestMapper.addinterest(student.getSname(),s);
+                }
+
                 resultInfo.setFlag(true);
                 resultInfo.setErrorMsg("注册成功");
                 ObjectMapper mapper = new ObjectMapper();
@@ -216,4 +235,56 @@ public class StudentController {
         System.out.println("插入成功");
         return student;
  }
+
+
+
+ @RequestMapping("/listAdvertisement")
+ public void listAdvertisement(ModelMap modelMap, HttpServletResponse response) throws IOException {
+
+
+     Student student = (Student) modelMap.get("student");
+     String sname = student.getSname();
+
+     List<String> interests = interestMapper.queryInterest(sname);
+     List<Advertisement>  advertisements = new ArrayList<>();
+
+
+
+     for(String interest: interests){
+
+         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+         Date nowDate= new Date();
+         String createdate= sdf.format(nowDate);
+
+        advertisements.addAll( advertisementMapper.searchAdvertisement(createdate,interest));
+
+     }
+     ResultUtil.feedBack(response,"",advertisements,true);
+
+ }
+
+    @RequestMapping("/searchAdvertisement")
+    public void searchAdvertisement(HttpServletRequest request,ModelMap modelMap, HttpServletResponse response) throws IOException {
+
+
+
+
+
+
+            String interest = request.getParameter("keywords");
+
+            System.out.println(interest);
+            SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+            Date nowDate= new Date();
+            String createdate= sdf.format(nowDate);
+
+           List<Advertisement>  advertisements = advertisementMapper.searchAdvertisement(createdate,interest);
+
+        System.out.println(advertisements);
+           ResultUtil.feedBack(response,"",advertisements,true);
+
+    }
+
+
+
 }

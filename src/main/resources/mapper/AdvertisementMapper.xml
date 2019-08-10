@@ -14,9 +14,14 @@
         select * from advertisement where eid=#{eid}
     </select>
 
-    <select id="queryAdvertisementByaid" resultType="advertisement">
+     <select id="queryAdvertisementByaid" resultType="advertisement">
         select * from advertisement where aid=#{aid}
     </select>
+
+    <select id="searchAdvertisement" resultType="advertisement">
+        select * from advertisement where  enddate > #{date} and title like  "%"#{interest}"%"
+    </select>
+
 
     <delete id="deleteAdvertisement" parameterType="Integer">
         DELETE  FROM advertisement where aid = #{aid}

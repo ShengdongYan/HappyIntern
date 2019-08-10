@@ -1,14 +1,12 @@
 
-body, ul, li{
+body{
     margin: 0;
     padding: 0; /* 去除白边*/
 
     font: .8em Arial, Tahoma, Verdana;
 
 }
-ul{
-    list-style-type: none;
-}
+
 body{
     font: 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
     background: #f5f5f5;
@@ -17,7 +15,7 @@ body{
 
 
 
-.topbar{
+.topbar {
 
     background-color: #095bbc;
     height: 60px;
@@ -109,15 +107,16 @@ span{
 }
 .searchbar{
     padding-top: 100px;
-    height: 80px;
+    height: 77px;
     width: 100%;
 }
 
 .logo{
     margin-left: 30%;
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 75px;
+    height: 75px;
+    padding-bottom: 3px;
 
 }
 .logo img{
@@ -153,3 +152,73 @@ span{
 }
 
 
+.advertiseList{
+    list-style: none;
+    padding: 0px;
+    display: block;
+    box-sizing: border-box;
+
+}
+
+ul{
+    list-style-type: none;
+    width: 99%;
+    margin: 0;
+    box-sizing: border-box;
+    display: block;
+
+}
+
+li{
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    width: 30%;
+    margin-bottom: 30px;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+ul a{
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    display: block;
+    text-align: center;
+    max-width: 100%;
+    font-size: .9333333333rem;
+    overflow: hidden;
+    -webkit-transition: border .2s ease-in;
+    transition: border .2s ease-in;
+    text-decoration: none;
+
+}
+
+.logo2 {
+    padding: 5px;
+    display: block;
+    margin: 3px;
+}
+
+.logo2>img {
+    width: auto;
+    max-height: 105px;
+    margin: 0 auto;
+    border-bottom:1px solid #eaeaea ;
+}
+
+.text{
+    font-size: 20px;
+    display: block;
+    margin: 5px 30px;
+    padding-top: 2px;
+    line-height: 29px;
+
+    color: #777;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

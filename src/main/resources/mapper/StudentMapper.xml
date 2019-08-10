@@ -29,7 +29,7 @@
         school = #{school},
         smail = #{smail},
         supname = #{supname}
-where  sid = #{sid}
+        where  sid = #{sid}
 
 
     </update>

@@ -12,11 +12,9 @@
             var reg=new RegExp("\n","g");
             var regg = new RegExp("\r\n","g");
             var regSpace=new RegExp(" ","g");
-
             str = str.replace(reg,"<br>");
             str = str.replace(regg,"<br>");
             str = str.replace(regSpace,"&nbsp;");
-
             return str;
         }
 
@@ -35,12 +33,8 @@
                 }
                 else {
 
-
-
                     $("#companyDescription").val(textareaToData($('#companyDescription').val()));
                     $("#text").val(textareaToData($('#text').val()));
-
-
                     document.getElementById("fileForm").submit();
                 }
             }
@@ -73,7 +67,7 @@
             <textarea id='text' name="content" placeholder="Write content for this advertisement" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:500px;font-size: 20px;margin-bottom: 30px "></textarea>
 
             <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;width: 300px;"> Choose the application deadline: </label>
-            <input type="date" name="enddate" STYLE="width: 140PX;font-size: 15px;display: block;margin-left:20px">
+            <input type="date" name="enddate" STYLE="width: 160PX;font-size: 15px;display: block;margin-left:20px">
 
             <br>
             <label style=" height: 30px;font-size: 20px; float: left;display: inline-block;"> Choose workplace:</label>
@@ -114,7 +108,6 @@
             -ms-touch-action: manipulation;
             line-height: 1.53334;
             border-radius: 4px;
-
               }"/>
         </div>
     </div>

@@ -6,6 +6,50 @@
     <meta charset="UTF-8">
     <title>HappyIntern</title>
     <script>
+
+        function search(){
+            alert($("#search_input").val());
+            $.post("/student/searchAdvertisement?keywords="+$("#search_input").val(), $(), function (data2) {
+                var fileList = data2.data;
+
+                //2.列表数据展示
+                var route_lis = "";
+                //设置最多显示6条推荐
+                for (var i = 0; i < fileList.length; i++) {
+                    var imgpath = fileList[i].imgpath;
+                    var title = fileList[i].title;
+                    var aid = fileList[i].aid;
+
+
+                    /*        <li id="1">
+                                    <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+                                    <span class="logo">
+                                    <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+                                    </span>
+                                    <p class="text">Jobs at hkjlghjklhjk  cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbh</p>
+                                </a>
+
+                                </li>*/
+
+                    var li = '<li>\n' +
+                        '      <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/myAdvertisement?aid='+aid+'">\n' +
+                        '                            <span class="logo2">\n' +
+                        '                             <img src="'+imgpath+'" alt="Neptune jobs">\n' +
+                        '                           </span>\n' +
+                        '        <p class="text">'+title+'</p>\n' +
+                        '                           </a>\n' +
+                        '                    </li>';
+                    route_lis += li;
+
+
+                }
+                $("#advertiseList").html(route_lis);
+                $("#result").html(' <p id="result" style="display: block;font-size: 30px ; font-weight: 700; width: 600px;margin: auto"> Search Result</p>');
+                //定位到页面顶部
+                window.scrollTo(0,0);
+
+            });
+        }
         $(function () {
             $.post("/loginTest/student", $(), function (data) {
               if (data.flag) {
@@ -13,8 +57,97 @@
                     alert("Welcome back "+username + " !");
 
                    $("#username").html( "<a href='' id='username'>"+username+"</a>");
-                } else {
-                    alert(data.errorMsg);
+
+                  $.post("/student/listAdvertisement?sname="+$("#username").val(), $(), function (data2) {
+
+                      var fileList = data2.data;
+
+                      //2.列表数据展示
+                      var route_lis = "";
+                 //设置最多显示6条推荐
+                      for (var i = 0; i < fileList.length; i++) {
+
+
+                           if(i==6){break;}
+                          var imgpath = fileList[i].imgpath;
+                          var title = fileList[i].title;
+                          var aid = fileList[i].aid;
+
+
+                          /*        <li id="1">
+                                          <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+                                          <span class="logo">
+                                          <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+                                          </span>
+                                          <p class="text">Jobs at hkjlghjklhjk  cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbh</p>
+                                      </a>
+
+                                      </li>*/
+
+                          var li = '<li>\n' +
+                              '      <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/myAdvertisement?aid='+aid+'">\n' +
+                              '                            <span class="logo2">\n' +
+                              '                             <img src="'+imgpath+'" alt="Neptune jobs">\n' +
+                              '                           </span>\n' +
+                              '        <p class="text">'+title+'</p>\n' +
+                              '                           </a>\n' +
+                              '                    </li>';
+                          route_lis += li;
+
+
+                      }
+                      $("#advertiseList").html(route_lis);
+
+                      //定位到页面顶部
+                      window.scrollTo(0,0);
+
+                  });
+
+
+              } else {
+                  $.post("/student/searchAdvertisement?keywords="+"", $(), function (data2) {
+                      var fileList = data2.data;
+
+                      //2.列表数据展示
+                      var route_lis = "";
+                      //设置最多显示6条推荐
+                      for (var i = 0; i < fileList.length; i++) {
+
+                          if(i==6){break;}
+                          var imgpath = fileList[i].imgpath;
+                          var title = fileList[i].title;
+                          var aid = fileList[i].aid;
+
+
+                          /*        <li id="1">
+                                          <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/jobs/neptune/p26972">
+                                          <span class="logo">
+                                          <img src="/logo/EC67986D18FD44DAA10F0EB5CFDF6CD9_search-consultancy-logo.gif" alt="Neptune jobs">
+                                          </span>
+                                          <p class="text">Jobs at hkjlghjklhjk  cgfhvbjkn hgjbkn hgj hgjbknlm fyghujvgbh</p>
+                                      </a>
+
+                                      </li>*/
+
+                          var li = '<li>\n' +
+                              '      <a class="gtmRecruiterProfile" data-companyname="Neptune" href="/myAdvertisement?aid='+aid+'">\n' +
+                              '                            <span class="logo2">\n' +
+                              '                             <img src="'+imgpath+'" alt="Neptune jobs">\n' +
+                              '                           </span>\n' +
+                              '        <p class="text">'+title+'</p>\n' +
+                              '                           </a>\n' +
+                              '                    </li>';
+                          route_lis += li;
+
+
+                      }
+                      $("#advertiseList").html(route_lis);
+                      //定位到页面顶部
+                      window.scrollTo(0,0);
+
+                  });
+
+
                 }
 
             });
@@ -47,6 +180,7 @@
         });
 
 
+
         });
 
 
@@ -73,13 +207,25 @@
 <div class="searchbox">
     <div class="searchbar">
         <div class="logo">
-            <a href="/"><img src="/img/favicon.png" alt=""></a>
+            <a ><img src="/img/favicon.png" alt=""></a>
         </div>
         <div class="search">
-            <input name="" id="search_input"  type="text" placeholder="e.g.web developer" class="search_input" autocomplete="off">
-            <a href="javascript:;" id="search-button" class="search-button">search</a>
+            <input name="keywords" id="search_input"  type="text" placeholder="e.g.web developer" class="search_input" autocomplete="off">
+            <a href="javascript:search();"  id="search-button" class="search-button">search</a>
         </div>
     </div>
+</div>
+
+<div style="width: 100%; display: block;  height: 35px; text-align: center;padding-bottom: 3px;margin-top: 15px">
+    <p id="result" style="display: block;font-size: 30px ; font-weight: 700; width: 600px;margin: auto"> Jobs recommended for you </p>
+</div>
+
+
+<div style="display: block;width: 99%;border: 1px solid #cfddf3; padding-top: 15px;margin-left: 5px;
+      margin-top: 5px;background-color: #fff;box-shadow: 0 0 10px 0 rgba(0,0,0,.1);  border-radius: 4px;">
+    <ul id="advertiseList">
+
+    </ul>
 </div>
 
 </body>
