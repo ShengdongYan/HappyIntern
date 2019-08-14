@@ -54,7 +54,6 @@ public class StudentController {
     @RequestMapping("/profilePage")
     public String showProfile(){
         return "student/studentProfile";
-
     }
 
 
@@ -64,23 +63,12 @@ public class StudentController {
 
     }
 
-
-
-
     @RequestMapping("/fileUpload2")
     public ModelAndView forwardMAV()throws Exception{
-
         ModelAndView mv = new ModelAndView();
-
-        //手动显式指定使用转发，此时springmvc.xml配置文件中的视图解析器将会失效
-       // mv.setViewName("/fileupload3");
         mv.setViewName("forward:/fileupload3");
         return mv;
     }
-
-
-
-
 
     @RequestMapping("/fileUpload")
     public String forwardMAV(HttpServletRequest request)throws Exception{
@@ -204,16 +192,14 @@ public class StudentController {
                 student.setSchool(request.getParameter("school"));
                 studentMapper.updateStudent(student);
                 sessionStatus.setComplete();
-               model.addAttribute("student",student);
-               model.addAttribute("sid",student.getSid());
+                model.addAttribute("student",student);
+                model.addAttribute("sid",student.getSid());
                 model.addAttribute("username",student.getSname());
-      ResultUtil.feedBack(response,"profile update successful",student,true);
+               ResultUtil.feedBack(response,"profile update successful",student,true);
         }catch (NumberFormatException ex) {
-
-  ex.printStackTrace();
+                 ex.printStackTrace();
                 ResultUtil.feedBack(response, "profile update fail", null, false);
             }
-
         }
     }
     @RequestMapping("/searchByName")
@@ -240,51 +226,33 @@ public class StudentController {
 
  @RequestMapping("/listAdvertisement")
  public void listAdvertisement(ModelMap modelMap, HttpServletResponse response) throws IOException {
-
-
      Student student = (Student) modelMap.get("student");
      String sname = student.getSname();
-
+     System.out.println(sname);
      List<String> interests = interestMapper.queryInterest(sname);
+
+     System.out.println(interests);
      List<Advertisement>  advertisements = new ArrayList<>();
-
-
-
      for(String interest: interests){
-
          SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
          Date nowDate= new Date();
          String createdate= sdf.format(nowDate);
-
-        advertisements.addAll( advertisementMapper.searchAdvertisement(createdate,interest));
-
+         advertisements.addAll( advertisementMapper.searchAdvertisement(createdate,interest));
      }
+     System.out.println("这里是listAdvertisementlistAdvertisementlistAdvertisementlist");
+     System.out.println(advertisements);
      ResultUtil.feedBack(response,"",advertisements,true);
-
  }
 
     @RequestMapping("/searchAdvertisement")
     public void searchAdvertisement(HttpServletRequest request,ModelMap modelMap, HttpServletResponse response) throws IOException {
-
-
-
-
-
-
             String interest = request.getParameter("keywords");
-
             System.out.println(interest);
             SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
             Date nowDate= new Date();
             String createdate= sdf.format(nowDate);
-
-           List<Advertisement>  advertisements = advertisementMapper.searchAdvertisement(createdate,interest);
-
-        System.out.println(advertisements);
-           ResultUtil.feedBack(response,"",advertisements,true);
-
+            List<Advertisement>  advertisements = advertisementMapper.searchAdvertisement(createdate,interest);
+            System.out.println(advertisements);
+            ResultUtil.feedBack(response,"",advertisements,true);
     }
-
-
-
 }

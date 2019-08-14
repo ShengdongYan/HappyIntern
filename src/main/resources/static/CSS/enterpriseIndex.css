@@ -164,14 +164,25 @@ ul a{
 
 .text{
     font-size: 20px;
-    display: block;
+
     margin: 5px 30px;
     padding-top: 2px;
     line-height: 29px;
-
     color: #777;
-    max-width: 400px;
+    max-width: 370px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+}
+
+h{
+    float: left;
+    font-size: 20px;
+    margin: 5px 10px 10px 20px ;
+    line-height: 29px;
+    color: #FF5555;
+    width: 15px;
+    border: 1px solid #FF5555 ;
+    border-radius: 4px;
 }

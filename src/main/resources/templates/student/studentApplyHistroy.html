@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/studentCV.css}" rel="stylesheet" type="text/css"/>
+    <title>HappyIntern</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/getParameter.js"></script>
+
+    <script>
+
+        function viewPdfDocument(pdfname){
+            if(pdfname!="") {
+
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdf/?fplace=" + pdfname));
+            }
+        }
+
+        function viewPdfDocumentByfid(fid){
+            if(fid!="") {
+
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdfByFid/?fid=" + fid));
+            }
+        }
+        $(function () {
+
+            $.post("/listFiles", $(), function (data) {
+
+                var filelist = data.data;
+
+                //2.列表数据展示
+                var route_lis = "";
+
+                for (var i = 0; i < filelist.length; i++) {
+                    //获取{rid:1,rname:"xxx"}
+                    var fplace = filelist[i].fplace;
+                    var fname = filelist[i].fname;
+                    var sid = filelist[i].sid;
+                    var time = filelist[i].createdate;
+                    var fdescription = filelist[i].fdescription;
+                    var fid = filelist[i].fid;
+
+                    /*
+                            <li>
+                                <div class="text1">
+                                    <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                                </div>
+                                <div class="price">
+                                    <p class="price_num">
+                                    <span>Time:</span>
+                                </p>
+                                <p><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                    <a href="route_detail.html">Download</a>&nbsp;&nbsp;
+                                    <a href="route_detail.html">Delete</a>&nbsp;&nbsp;
+
+                                    </p>
+                                    </div>
+                                    </li>
+                    */
+
+                    var li = '<li>\n' +
+                        '                        <div class="text1">\n' +
+                        '                            <p>'+fname+'</p>\n' +
+                        '                            <br/>\n' +
+                        '                            <p>'+fdescription+'</p>\n' +
+                        '                        </div>\n' +
+                        '                        <div class="price">\n' +
+                        '                            <p class="price_num" style=" display: inline-block">\n' +
+                        '                                <span style="font-size: 15px; display: inline-block;height: 20px;margin: auto">'+time+'</span>\n'+
+                        '                            </p>\n' +
+                        '                             <p style="margin-top: 20px">' +
+                        '                             <a style="text-decoration: underline" onclick="viewPdfDocumentByfid('+fid+')">View</a> &nbsp;&nbsp;\n' +
+                        '                             <a href="/showpdf?fplace='+fplace+'">Download</a>&nbsp;&nbsp;\n' +
+                        '                             <a href="/deletepdf?fid='+fid+'">Delete</a></p>\n' +
+                        '                        </div>\n' +
+                        '                    </li>';
+                    route_lis += li;
+                }
+                $("#files").html(route_lis);
+
+                //定位到页面顶部
+                window.scrollTo(0,0);
+            });
+
+
+
+            $.post("/loginTest/student", $(), function (data) {
+                if (data.flag) {
+                    var username = data.data.sname;
+                    $("#username").html( "<a href='/student/profilePage' id='username'>"+username+"</a>");
+                } else {
+                    /* alert(data.errorMsg);*/
+                }
+            });
+            $("#manageCV").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/CVPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+            $("#button").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/showUploadPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#Profile").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/profilePage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+        });
+
+
+
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <div class="container">
+        <a href="/student/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
+        <div class="topbar-left">
+            <span>|</span>
+            <a href=""  class="advertisement" >Internships</a><span>|</span>
+            <a  id="manageCV" >ManageFile</a> <span>|</span>
+            <a  id="applyHistory"style="    border-bottom: 5px solid #EEEEEE;">ApplyHistory</a><span>|</span>
+            <a  id="WeeklyReport">WeeklyReport</a> <span>|</span>
+            <a  id="Profile"  >Profile</a> <span>|</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/student/profilePage" id="username">Login</a>
+        </div>
+    </div>
+</div>
+<div class="page_one">
+    <div class="contant">
+        <!--<div class="crumbs">
+            <img src="/img/search.png" alt="">
+            <p>Manage your profile here</p>
+        </div>-->
+        <div class="xinxi clearfix">
+            <div class="left">
+                <div class="header">
+                    <span >Documents</span>
+                    <span class="jg">Operation</span>
+                </div>
+                <ul id="files">
+                    <li>
+                        <div class="text1">
+                            <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
+                            <br/>
+                            <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                        </div>
+                        <div class="price">
+                            <p class="price_num">
+                                <span>Time:</span>
+                            </p>
+                            <p><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                <a href="route_detail.html">Download</a>&nbsp;&nbsp;
+                                <a href="route_detail.html">Delete</a>&nbsp;&nbsp;
+
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+
+                        <div class="text1">
+                            <p >浪花朵朵旅行普吉岛丛林飞跃空中飞人探险游中文服务泰国旅游</p>
+                            <br/>
+                            <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                        </div>
+                        <div class="price">
+                            <p class="price_num">
+                                <span>&yen;</span>
+                                <span>899</span>
+                                <span>起</span>
+                            </p>
+                            <p><a href="route_detail.html">查看详情</a></p>
+                        </div>
+                    </li>
+
+
+                </ul>
+                <div class="buttonbar" style="text-align: center">
+                    <input type="button" value="Upload another file"  id="button" class="button" style="
+                    background-color: #e84188;
+    float: none;
+    max-width: 290px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #333;
+    border: 1px solid #d6d6d6;
+    height: 2.8rem;
+    box-sizing: border-box;
+    margin: auto;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    line-height: 1.53334;
+    border-radius: 4px;
+    padding: 8px 12px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

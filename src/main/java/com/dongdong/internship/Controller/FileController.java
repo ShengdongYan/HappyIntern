@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +34,6 @@ import java.util.UUID;
 public class FileController {
     @Autowired
     private FileMapper fileMapper;
-
 
 
 
@@ -110,7 +108,6 @@ public class FileController {
 
             String fplace = pdf.getFplace();
 
-
             response.reset();
             response.setContentType("application/octet-stream");
             response.setCharacterEncoding("utf-8");
@@ -119,10 +116,7 @@ public class FileController {
             byte[] buff = new byte[1024];
             BufferedInputStream bis = null;
             OutputStream os = null;
-
             try {
-
-
                 String newpath = fplace;  // 项目中用相对路径，但是相对路径千万不能加/开头，不然还是从盘符！
                 File pdf2 = new File(newpath);
                 System.out.println("请求PDF路径：" + pdf2.getAbsolutePath());
@@ -147,42 +141,31 @@ public class FileController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
                 return null;
             }
 
         }
     }
 
-
     //直接访问/showpdf 可以实现下载功能，返回给pdfjs 可以获取在线阅读
     @RequestMapping("/showpdf")
     public String test3(HttpServletResponse response, HttpServletRequest request,@Param("fplace")String fplace) {
-
         String urlPath = "";
         response.reset();
         response.setContentType("application/octet-stream");
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fplace);
         System.out.println(fplace);
-
         byte[] buff = new byte[1024];
         BufferedInputStream bis = null;
         OutputStream os = null;
-
         try {
-
-
             //下面几行说明从绝对路径可以
-
-  /*          String Path = new String("PDFFile/");
+           /*          String Path = new String("PDFFile/");
 
             File pdf2 = new File(urlPath);
             System.out.println(pdf2.getAbsolutePath());
             String newpath = pdf2.getAbsolutePath()+"/PDFFile//test.pdf";*/
-
-
             String newpath = fplace;  // 项目中用相对路径，但是相对路径千万不能加/开头，不然还是从盘符！
             File pdf = new File(newpath);
             System.out.println("请求PDF路径：" + pdf.getAbsolutePath());
@@ -197,23 +180,17 @@ public class FileController {
                 os.write(buff, 0, i);
                 os.flush();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-
         } finally {
             try {
                 bis.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
             return null;
         }
-
     }
-
 
     @RequestMapping("/deletepdf")
     public String deletepdf(@Param("fid")Integer fid){

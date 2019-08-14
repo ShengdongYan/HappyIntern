@@ -39,7 +39,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/img/");
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/mapper/**").addResourceLocations("classpath:/static/mapper/");
-       registry.addResourceHandler("/logo/**").addResourceLocations("classpath:/static/logo/");
+       registry.addResourceHandler("/logo/**").addResourceLocations("file:/Users/yanshengdong/IntelliJ-workspace/Internship/src/main/resources/logo/");
     }
 
 

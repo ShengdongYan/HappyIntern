@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/studentCV.css}" rel="stylesheet" type="text/css"/>
+    <title>HappyIntern</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/getParameter.js"></script>
+
+    <script>
+
+        function viewPdfDocument(pdfname){
+            if(pdfname!="") {
+
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdf/?fplace=" + pdfname));
+            }
+        }
+
+        function viewPdfDocumentByfid(fid){
+            if(fid!="") {
+
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdfByFid/?fid=" + fid));
+            }
+        }
+        $(function () {
+
+            $.post("/listFiles", $(), function (data) {
+
+                var filelist = data.data;
+
+                //2.列表数据展示
+                var route_lis = "choose one file to submit:";
+
+                for (var i = 0; i < filelist.length; i++) {
+                    //获取{rid:1,rname:"xxx"}
+                    var fplace = filelist[i].fplace;
+                    var fname = filelist[i].fname;
+                    var sid = filelist[i].sid;
+                    var time = filelist[i].createdate;
+                    var fdescription = filelist[i].fdescription;
+                    var fid = filelist[i].fid;
+
+                    /*
+                    choose one file to submit:
+           <br>
+           <label><input type="radio" name="sex" value="男生">男生</label>
+           <br>
+          <label><input type="radio" name="sex" value="女生">女生</label>
+          <br>
+                    */
+
+                    var li = ' <br><br>\n' +
+                        '                       <label><input type="radio" name="file" value="'+fid+'">'+fname+'</label>\n' ;
+
+                    route_lis += li;
+                }
+                $("#files").html(route_lis);
+
+                //定位到页面顶部
+                window.scrollTo(0,0);
+            });
+
+
+
+            $.post("/loginTest/student", $(), function (data) {
+                if (data.flag) {
+                    var username = data.data.sname;
+                    $("#username").html( "<a  id='username'>"+username+"</a>");
+                } else {
+                    /* alert(data.errorMsg);*/
+                }
+            });
+            $("#manageCV").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/CVPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+            $("#button").click(function () {
+
+
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        var fid = $('input:radio:checked').val();
+
+                  location.href = "/apply?fid="+ fid;
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#Profile").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/profilePage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+        });
+
+
+
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <div class="container">
+        <a href="/student/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
+        <div class="topbar-left">
+            <span>|</span>
+            <a href="/student/index"  class="advertisement" >Internships</a><span>|</span>
+            <a    style="    border-bottom: 5px solid #EEEEEE;">ChooseFile</a><span>|</span>
+        </div>
+        <div class="topbar-right">
+            <a  id="username">Login</a>
+        </div>
+    </div>
+</div>
+<div class="page_one">
+
+    <div id="files" style="text-align:left; margin-left: 20%; font-size: 23px">
+        choose one file to submit:
+        <br>
+        <label><input type="radio" name="file" value="男生">男生</label>
+        <br>
+        <label><input type="radio" name="file" value="女生">女生</label>
+        <br>
+    </div>
+
+    <div class="buttonbar" style="text-align: center">
+        <input type="button" value="submit"  id="button" class="button" style="
+                    background-color: #e84188;
+    float: none;
+    max-width: 290px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #333;
+    border: 1px solid #d6d6d6;
+    height: 2.8rem;
+    box-sizing: border-box;
+    margin: auto;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    line-height: 1.53334;
+    border-radius: 4px;
+    padding: 8px 12px;">
+    </div>
+
+</div>
+
+</body>
+</html>

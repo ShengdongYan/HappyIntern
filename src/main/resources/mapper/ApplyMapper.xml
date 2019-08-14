@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdong.internship.mapper.ApplyMapper">
+
+
+
+    <insert id="addApply" parameterType="apply" >
+        INSERT INTO
+           apply
+        (aid,sname,fid,applydate,status)
+        VALUES
+        ( #{aid},#{sname}, #{fid}, #{applydate},#{status})
+    </insert>
+
+
+    <select id="queryApplyByAid" resultType="apply">
+        select * from apply where aid=#{aid}
+    </select>
+
+
+    <select id="queryApplyBySname" resultType="apply">
+        select * from apply where sname=#{sname}
+    </select>
+
+    <select id="queryStatus" resultType="String">
+        select status from apply where  applyid = #{applyid}
+    </select>
+
+
+
+    <select id="queryFeedback" resultType="String">
+        select feedback from apply where  applyid = #{applyid}
+    </select>
+
+
+    <update id="addFeedback"  >
+        update apply set
+                              feedback = #{feedback},
+
+        where  applyid = #{applyid}
+
+
+    </update>
+
+
+    <delete id="deleteApply" parameterType="Integer">
+        DELETE  FROM aapply where applyid = #{applyid}
+    </delete>
+
+
+</mapper>
