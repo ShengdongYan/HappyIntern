@@ -17,7 +17,7 @@
 
             return str;
         }
-        window.scroll=function(){
+          window.scroll=function(){
 
             var s = document.body.scrollTop || document.documentElement.scrollTop
             document.getElementById('d1').style.top=s+200;//通过scrollTop设置滚动到100位置
@@ -46,18 +46,6 @@
 
                     });
 
-
-            $("#toplogo").click(function () {
-                $.post("/loginTest/enterprise", $(), function (data) {
-                    if (data.flag) {
-                        location.href = "/enterprise/index";
-                    } else {
-                        alert(data.errorMsg);
-                    }
-
-                });
-
-            });
 
 
 
@@ -93,7 +81,7 @@
    <div style=" text-align: center;width: 100%; font-size: 20px; font-weight:700;color: #70DB55;background: #555555" id="contactway"></div>
 </div>
     <div class="leftBox" style="position: fixed;top: 300px;display: inline-block; float:right; width: 130px; background: #FFFFFF" id="butBox">
-         <a id="deleteBut" href="" style="width: 100%; font-size: 16px;  background-color: #e84188;
+         <a id="deleteBut" href="/deleteAdvertisement" style="width: 100%; font-size: 16px;  background-color: #e84188;
             float: none;
              max-width: 290px;
             font-weight: 700;
@@ -109,7 +97,7 @@
             -ms-touch-action: manipulation;
             line-height: 1.53334;
             border-radius: 4px;"> delete</a>
-        <a  href="/chooseFile" id="applyHistory"  style="width: 100%; font-size: 16px;  background-color: #e84188;
+        <a  href="/viewApply" id="viewApply"  style="width: 100%; font-size: 16px;  background-color: #e84188;
             float: none;
              max-width: 290px;
             font-weight: 700;

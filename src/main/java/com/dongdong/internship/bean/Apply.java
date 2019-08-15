@@ -1,7 +1,5 @@
 package com.dongdong.internship.bean;
 
-
-
 /**
  * @Author: ShengdongYan
  * @Date: 2019-07-29

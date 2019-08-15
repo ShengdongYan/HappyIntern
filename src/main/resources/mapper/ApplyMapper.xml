@@ -33,15 +33,27 @@
         select feedback from apply where  applyid = #{applyid}
     </select>
 
+    <select id="countByAid" resultType="Integer">
+        select count(*) from apply where  aid = #{aid}
+    </select>
 
-    <update id="addFeedback"  >
+    <update id="changeFeedback"  >
         update apply set
-                              feedback = #{feedback},
+           feedback = #{feedback}
 
         where  applyid = #{applyid}
 
 
     </update>
+    <update id="changeStatus"  >
+        update apply set
+            status = #{status}
+
+        where  applyid = #{applyid}
+
+
+    </update>
+
 
 
     <delete id="deleteApply" parameterType="Integer">

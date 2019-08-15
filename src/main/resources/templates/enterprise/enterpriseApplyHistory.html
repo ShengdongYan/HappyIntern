@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/studentApply.css}" rel="stylesheet" type="text/css"/>
+    <title>HappyIntern</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/getParameter.js"></script>
+    <script>
+
+        function textareaToData(str){
+            var reg=new RegExp("\n","g");
+            var regg = new RegExp("\r\n","g");
+            var regSpace=new RegExp(" ","g");
+            alert(str);
+            str = str.replace(reg,"<br>");
+            str = str.replace(regg,"<br>");
+            str = str.replace(regSpace,"&nbsp;");
+            return str;
+        }
+
+ /*       function uploadFeedback(){
+            var doc = document.getElementById("pdffile");
+            if (doc == null || doc===undefined || doc=="") {
+                alert("please choose a file and try again");
+            }
+            else {
+
+                    $("#companyDescription").val(textareaToData($('#companyDescription').val()));
+                    $("#text").val(textareaToData($('#text').val()));
+                    document.getElementById("fileForm").submit();
+            }
+        }*/
+
+        function viewPdfDocument(pdfname){
+            if(pdfname!="") {
+
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdf/?fplace=" + pdfname));
+            }
+        }
+
+        function viewPdfDocumentByfid(fid){
+            if(fid!="") {
+                window.open("/pdfjs/web/viewer.html?file="
+                    + encodeURIComponent("/showpdfByFid/?fid=" + fid));
+            }
+        }
+
+
+        function writeFeedback(applyid){
+
+            var  textid = applyid+300; // feedback按钮
+            var fakeapplyid = applyid+200; // feedback 内容
+            var flag =  $("#" + fakeapplyid +"")[0].style.display;
+            if(flag == "none") {
+                $("#" + textid + "").val("submit");
+                $("#" + fakeapplyid + "").css('display', 'block');
+                flag = false;
+            }
+            else if(flag =="block"){
+                alert( $("#"+fakeapplyid+"").val());
+
+                $("#"+fakeapplyid+"").val(textareaToData($("#"+fakeapplyid+"").val()));
+
+                $.post("/changeFeedback?applyid=" + applyid+"&feedback="+ $("#"+fakeapplyid+"").val(), $(), function () {
+                    $("#" + textid + "").val("Write feedback");
+                    $("#" + fakeapplyid + "").css('display', 'none');
+                    flag = true;
+                    location.href = "/enterprise/index";
+                });
+            }
+        }
+        function changeStatus(applyid){
+            var flag =  $("#" + applyid+ "")[0].style.display;
+
+            var statusid = applyid +400;
+
+            if(flag == "none") {
+                    $("#" + statusid + "").val("submit");
+                    $("#" + applyid + "").css('display', 'block');
+                    flag = false;
+
+            }
+            else if(flag =="block"){
+                $.post("/changeStatus?applyid=" + applyid+"&status="+$('input:radio:checked').val(), $(), function () {
+                    $("#" + statusid + "").val("Change status");
+                    $("#" + applyid + "").css('display', 'none');
+                    flag = true;
+                    location.href = "/enterprise/index";
+                });
+            }
+        }
+        $(function () {
+            $.post("/showApplyier", $(), function (data) {
+
+                var historylist = data.data;
+
+                //2.列表数据展示 a
+                var route_lis = "";
+                /*
+                                private  Apply apply;
+                                private  Student student;
+                                private  PDFFile file ;
+                                private  Advertisement advertisement;*/
+
+                for (var i = 0; i < historylist.length; i++) {
+                    //获取{rid:1,rname:"xxx"}
+                    var PDF = historylist[i].file;
+                    var  apply = historylist[i].apply;
+                    var student = historylist[i].student;
+                    var advertisement = historylist[i].advertisement;
+
+                    var imgpath = advertisement.imgpath;
+                    var title = advertisement.title;
+                    var pdfname = PDF.fname;
+                    var fid = PDF.fid;
+                    var time = apply.applydate;
+                    var status = apply.status;
+                    var applyid = apply.applyid;
+                    var statusid = applyid+400;  // 状态内容
+                    var  textid = applyid+300; // feedback按钮
+                    var fakeapplyid = applyid+200; // feedback 内容
+
+                    /*
+                          <li>
+                        <div class="text1">
+                            <img src="/logo/ECA7E0D60248490EB9E290F7B3001ED8_Banner_51087.png" alt="Neptune jobs" style="">
+                             <p class="text">Java Developer</p>
+                        </div>
+                        <div class="price">
+                        <p class="price_num">Java-研一-闫胜东.pdf</p>
+                            <p class="price_num">Time:</p>
+                            <p class="price_num">Status</p>
+                            <br>
+                            <p class="buttons"><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                <a href="route_detail.html">Feedback</a>&nbsp;&nbsp;</p>
+                        </div>
+                    </li>
+                    */
+                    var li = '<li >\n' +
+                        '                        <div class="text1">\n' +
+                        '                            <img src="'+imgpath+'"alt="Neptune jobs" style="">\n' +
+                        '                             <p class="text">'+title+'</p>\n' +
+                        '                        </div>\n' +
+                        '                        <div class="price">\n' +
+                        '                            <p class="price_num">'+pdfname+'</p>\n' +
+                        '                              <p class="price_num">'+time+'</p>\n'+
+                        '                              <p class="price_num"> status:'+status+'</p>\n'+
+                        '                             <br>\n' +
+                        '                             <p class="buttons"><input type="button"   onclick="viewPdfDocumentByfid('+fid+')" value="ViewCV"></input>  &nbsp;&nbsp;\n' +
+                        '                             <input  type="button" id="'+statusid+'" onclick="changeStatus('+applyid+')" value="Change status"></input>  &nbsp;&nbsp;\n' +
+                        '                             <input type="button"  id="'+textid+'" onclick="writeFeedback('+applyid+')" value="Write Feedback"></input> </p> \n' +
+                        '                             </div>\n' +
+                        '                        </div>\n' +
+                        '                    </li>\n'+
+                        '                    <textarea id="'+fakeapplyid+'" name="content" placeholder="Write Feedback here" style="padding-left: 3px;padding-top: 5px;display: none;width: 920px;height:300px;font-size: 20px;margin-bottom: 30px "></textarea>' +
+                        '                    <div id="'+applyid+'" style="padding-left: 3px;padding-top: 5px;display:none;width: 920px;font-size: 16px;margin-bottom: 30px; text-align: left;  word-wrap: break-word ;word-break : break-all;  border: 1px solid #eee">' +
+                        '                    <label><input type="radio" name="status" value="unread"> unread</label>\n'+
+                        '                   <label><input type="radio" name="status" value="waiting process"> waiting process</label>\n'+
+                        '                   <label><input type="radio" name="status" value="refuse"> refuse</label>\n'+
+                        '                   <label><input type="radio" name="status" value="accept"> accept</label>\n'+
+                        '</div>      ';
+                    route_lis += li;
+
+                }
+                $("#files").html(route_lis);
+
+                //定位到页面顶部
+                window.scrollTo(0,0);
+            });
+
+
+
+
+
+            $("#Profile").click(function () {
+                $.post("/loginTest/enterprise", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/enterprise/profilePage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+            $("#button").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/showUploadPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#button").click(function () {
+                $.post("/loginTest/enterprise", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/enterprise/showPostPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+        });
+
+
+
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <a href="/enterprise/index" id="toplogo" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+        <img  src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px; "></a>
+</div>
+
+<div class="page_one">
+    <div class="contant">
+        <!--<div class="crumbs">
+            <img src="/img/search.png" alt="">
+            <p>Manage your profile here</p>
+        </div>-->
+        <div class="xinxi clearfix">
+            <div class="left">
+                <div class="header">
+                    <span >Advertisement</span>
+                    <span class="jg">Applier</span>
+                </div>
+                <ul id="files">
+                    <li>
+                        <div class="text1">
+                            <img src="/logo/ECA7E0D60248490EB9E290F7B3001ED8_Banner_51087.png" alt="Neptune jobs" style="">
+                            <p class="text">Java Developer</p>
+                        </div>
+                        <div class="price"><p class="price_num">Java-研一-闫胜东.pdf</p>
+                            <p class="price_num">Time:</p>
+                            <p class="price_num">Status</p>
+                            <br>
+                            <p class="buttons"><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                <a href="route_detail.html">Feedback</a>&nbsp;&nbsp;</p>
+                        </div>
+                    </li>
+                    <li>
+
+                        <div class="text1">
+                            <p >浪花朵朵旅行普吉岛丛林飞跃空中飞人探险游中文服务泰国旅游</p>
+                            <br/>
+                            <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                        </div>
+                        <div class="price">
+                            <p class="price_num">
+                                <span>&yen;</span>
+                                <span>899</span>
+                                <span>起</span>
+                            </p>
+                            <p><a href="route_detail.html">查看详情</a></p>
+                        </div>
+                    </li>
+
+
+                </ul>
+                <div class="buttonbar" style="text-align: center">
+                    <input type="button" value="Release another advertisement"  id="button" class="button" style="
+                               background-color: #e84188;
+                               float: none;
+                               max-width: 290px;
+                               font-weight: 700;
+                               font-size: 22px;
+                               color: #333;
+                               height: 2.8rem;
+                               box-sizing: border-box;
+                               margin: auto;
+                               width: 100%;
+                               display: inline-block;
+                              text-align: center;
+                              vertical-align: middle;
+                              -ms-touch-action: manipulation;
+                              line-height: 1.53334;
+                               border: 1px solid #d6d6d6;
+                               border-radius: 4px;
+                              padding: 8px 12px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

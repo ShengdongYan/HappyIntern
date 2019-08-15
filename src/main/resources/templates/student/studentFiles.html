@@ -134,6 +134,17 @@
             });
 
         });
+            $("#applyHistory").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/historyPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
 
 
         });

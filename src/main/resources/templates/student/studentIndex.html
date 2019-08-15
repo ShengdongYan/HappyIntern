@@ -177,6 +177,18 @@
 
         });
 
+            $("#applyHistory").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/historyPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
 
 
         });
@@ -189,7 +201,7 @@
         <a href="/student/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
         <div class="topbar-left">
             <span>|</span>
-            <a href=""  class="advertisement" style="    border-bottom: 5px solid #EEEEEE;
+            <a href="/student/index"  class="advertisement" style="    border-bottom: 5px solid #EEEEEE;
            ">Internships</a><span>|</span>
             <a  id="manageCV">ManageFile</a> <span>|</span>
             <a  id="applyHistory">ApplyHistory</a><span>|</span>

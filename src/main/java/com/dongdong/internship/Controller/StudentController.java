@@ -56,6 +56,10 @@ public class StudentController {
         return "student/studentProfile";
     }
 
+    @RequestMapping("/historyPage")
+    public String showHistory(){
+        return "student/studentApplyHistory";
+    }
 
     @RequestMapping("/CVPage")
     public String showCV(){

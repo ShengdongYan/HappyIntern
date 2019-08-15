@@ -29,10 +29,9 @@
                 var size = doc.files[0].size;
                 if (size > MAX_SIZE) {
                     alert("The file can't larger than 5M");
-
                 }
                 else {
-
+                    alert($('#text').val());
                     $("#companyDescription").val(textareaToData($('#companyDescription').val()));
                     $("#text").val(textareaToData($('#text').val()));
                     document.getElementById("fileForm").submit();

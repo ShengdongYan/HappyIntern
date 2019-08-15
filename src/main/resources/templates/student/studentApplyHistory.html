@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/studentCV.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/studentApply.css}" rel="stylesheet" type="text/css"/>
     <title>HappyIntern</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,66 +21,99 @@
 
         function viewPdfDocumentByfid(fid){
             if(fid!="") {
-
                 window.open("/pdfjs/web/viewer.html?file="
                     + encodeURIComponent("/showpdfByFid/?fid=" + fid));
             }
         }
+
+
+
+        function viewFeedback(applyid){
+            var flag =  $("#" + applyid + "")[0].style.display;
+            if(flag == "none") {
+                $.post("/showFeedback?applyid=" + applyid, $(), function (data) {
+                    $("#" + applyid + "").html(data.data);
+
+                    $("#" + applyid + "").css('display', 'block');
+                    flag = false;
+                });
+            }
+            else if(flag =="block"){
+                $("#" + applyid + "").css('display', 'none');
+                flag = true;
+            }
+        }
+
+
         $(function () {
 
-            $.post("/listFiles", $(), function (data) {
 
-                var filelist = data.data;
+            $.post("/applyHistory", $(), function (data) {
 
-                //2.列表数据展示
+                var historylist = data.data;
+
+                //2.列表数据展示 a
                 var route_lis = "";
+/*
+                private  Apply apply;
+                private  Student student;
+                private  PDFFile file ;
+                private  Advertisement advertisement;*/
 
-                for (var i = 0; i < filelist.length; i++) {
+                for (var i = 0; i < historylist.length; i++) {
                     //获取{rid:1,rname:"xxx"}
-                    var fplace = filelist[i].fplace;
-                    var fname = filelist[i].fname;
-                    var sid = filelist[i].sid;
-                    var time = filelist[i].createdate;
-                    var fdescription = filelist[i].fdescription;
-                    var fid = filelist[i].fid;
+                    var PDF = historylist[i].file;
+                    var  apply = historylist[i].apply;
+                    var student = historylist[i].student;
+                    var advertisement = historylist[i].advertisement;
+
+                    var imgpath = advertisement.imgpath;
+                    var title = advertisement.title;
+                    var pdfname = PDF.fname;
+                    var fid = PDF.fid;
+                    var time = apply.applydate;
+                    var status = apply.status;
+                    var applyid = apply.applyid;
+
+
 
                     /*
-                            <li>
-                                <div class="text1">
-                                    <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
-                                <br/>
-                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
-                                </div>
-                                <div class="price">
-                                    <p class="price_num">
-                                    <span>Time:</span>
-                                </p>
-                                <p><a href="route_detail.html">View</a>  &nbsp;&nbsp;
-                                    <a href="route_detail.html">Download</a>&nbsp;&nbsp;
-                                    <a href="route_detail.html">Delete</a>&nbsp;&nbsp;
-
-                                    </p>
-                                    </div>
-                                    </li>
+                          <li>
+                        <div class="text1">
+                            <img src="/logo/ECA7E0D60248490EB9E290F7B3001ED8_Banner_51087.png" alt="Neptune jobs" style="">
+                             <p class="text">Java Developer</p>
+                        </div>
+                        <div class="price">
+                        <p class="price_num">Java-研一-闫胜东.pdf</p>
+                            <p class="price_num">Time:</p>
+                            <p class="price_num">Status</p>
+                            <br>
+                            <p class="buttons"><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                <a href="route_detail.html">Feedback</a>&nbsp;&nbsp;</p>
+                        </div>
+                    </li>
                     */
 
-                    var li = '<li>\n' +
+                    var li = '<li >\n' +
                         '                        <div class="text1">\n' +
-                        '                            <p>'+fname+'</p>\n' +
-                        '                            <br/>\n' +
-                        '                            <p>'+fdescription+'</p>\n' +
+                        '                            <img src="'+imgpath+'"alt="Neptune jobs" style="">\n' +
+                        '                             <p class="text">'+title+'</p>\n' +
                         '                        </div>\n' +
                         '                        <div class="price">\n' +
-                        '                            <p class="price_num" style=" display: inline-block">\n' +
-                        '                                <span style="font-size: 15px; display: inline-block;height: 20px;margin: auto">'+time+'</span>\n'+
-                        '                            </p>\n' +
-                        '                             <p style="margin-top: 20px">' +
-                        '                             <a style="text-decoration: underline" onclick="viewPdfDocumentByfid('+fid+')">View</a> &nbsp;&nbsp;\n' +
-                        '                             <a href="/showpdf?fplace='+fplace+'">Download</a>&nbsp;&nbsp;\n' +
-                        '                             <a href="/deletepdf?fid='+fid+'">Delete</a></p>\n' +
+                        '                            <p class="price_num">'+pdfname+'</p>\n' +
+                        '                              <p class="price_num">'+time+'</p>\n'+
+                        '                              <p class="price_num"> status:'+status+'</p>\n'+
+                        '                             <br>\n' +
+                        '                             <p class="buttons"><a   href="" onclick="viewPdfDocumentByfid('+fid+')">ViewCV</a>  &nbsp;&nbsp;\n' +
+                        '                             <a  onclick="viewFeedback('+applyid+')">Feedback</a> </p> &nbsp;&nbsp;\n' +
+                        '                             </div>\n' +
                         '                        </div>\n' +
-                        '                    </li>';
+                        '                    </li>\n'+
+                        '                    <div id="'+applyid+'" style="padding-left: 3px;padding-top: 5px;display:none;width: 920px;font-size: 16px;margin-bottom: 30px; text-align: left;  word-wrap: break-word ;word-break : break-all;  border: 1px solid #eee">' +
+                        '                    </div>      ';
+
                     route_lis += li;
+
                 }
                 $("#files").html(route_lis);
 
@@ -135,6 +168,17 @@
 
             });
 
+            $("#applyHistory").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/historyPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
 
         });
 
@@ -169,25 +213,21 @@
         <div class="xinxi clearfix">
             <div class="left">
                 <div class="header">
-                    <span >Documents</span>
-                    <span class="jg">Operation</span>
+                    <span >Advertisement</span>
+                    <span class="jg">Applier</span>
                 </div>
                 <ul id="files">
                     <li>
                         <div class="text1">
-                            <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
-                            <br/>
-                            <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            <img src="/logo/ECA7E0D60248490EB9E290F7B3001ED8_Banner_51087.png" alt="Neptune jobs" style="">
+                             <p class="text">Java Developer</p>
                         </div>
-                        <div class="price">
-                            <p class="price_num">
-                                <span>Time:</span>
-                            </p>
-                            <p><a href="route_detail.html">View</a>  &nbsp;&nbsp;
-                                <a href="route_detail.html">Download</a>&nbsp;&nbsp;
-                                <a href="route_detail.html">Delete</a>&nbsp;&nbsp;
-
-                            </p>
+                        <div class="price"><p class="price_num">Java-研一-闫胜东.pdf</p>
+                            <p class="price_num">Time:</p>
+                            <p class="price_num">Status</p>
+                            <br>
+                            <p class="buttons"><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                <a href="route_detail.html">Feedback</a>&nbsp;&nbsp;</p>
                         </div>
                     </li>
                     <li>
@@ -217,7 +257,7 @@
     font-weight: 700;
     font-size: 22px;
     color: #333;
-    border: 1px solid #d6d6d6;
+
     height: 2.8rem;
     box-sizing: border-box;
     margin: auto;
@@ -227,6 +267,7 @@
     vertical-align: middle;
     -ms-touch-action: manipulation;
     line-height: 1.53334;
+     border: 1px solid #d6d6d6;
     border-radius: 4px;
     padding: 8px 12px;">
                 </div>

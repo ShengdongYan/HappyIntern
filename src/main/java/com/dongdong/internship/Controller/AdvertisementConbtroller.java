@@ -1,10 +1,11 @@
 package com.dongdong.internship.Controller;
-import com.dongdong.internship.bean.Advertisement;
-import com.dongdong.internship.bean.Apply;
-import com.dongdong.internship.bean.Enterprise;
-import com.dongdong.internship.bean.Student;
+
+
+import com.dongdong.internship.bean.*;
 import com.dongdong.internship.mapper.AdvertisementMapper;
 import com.dongdong.internship.mapper.ApplyMapper;
+import com.dongdong.internship.mapper.FileMapper;
+import com.dongdong.internship.mapper.StudentMapper;
 import com.dongdong.internship.util.ResultUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +38,9 @@ public class AdvertisementConbtroller {
 
     @Autowired
     private ApplyMapper applyMapper;
+
+    @Autowired
+    private  StudentMapper studentMapper;
 
     @RequestMapping(value = "/advertisementUpload")  // 记住，每十天不用，系统会自动删除为项目创建的临时文件，到时候会报错，解决办法看收藏
     public String fileupload3(ModelMap modelMap, HttpServletRequest request, MultipartFile upload) throws
@@ -124,8 +129,17 @@ public class AdvertisementConbtroller {
         Enterprise enterprise = (Enterprise) modelMap.get("enterprise");
         Integer eid = enterprise.getEid();
         List<Advertisement> advertisementList= advertisementMapper.queryAdvertisementByEid(eid);
+        List<AdvertisementWithNum> advertisementWithNums = new ArrayList<AdvertisementWithNum>();
+        for(int i = 0 ; i < advertisementList.size();i++){
+            Advertisement advertisement = advertisementList.get(i);
+            Integer number = applyMapper.countByAid(advertisement.getAid());
+            AdvertisementWithNum advertisementWithNum = new AdvertisementWithNum();
+            advertisementWithNum.setAdvertisement(advertisement);
+            advertisementWithNum.setNumber(number);
+            advertisementWithNums.add(advertisementWithNum);
+        }
 
-        ResultUtil.feedBack(response,"",advertisementList,true);
+        ResultUtil.feedBack(response,"",advertisementWithNums,true);
     }
 
 
@@ -170,6 +184,7 @@ public class AdvertisementConbtroller {
         apply.setApplydate(applydate);
         apply.setSname(sname);
         apply.setFid(fid);
+        apply.setStatus("waiting process");
         applyMapper.addApply(apply);
 
 
@@ -185,29 +200,101 @@ public class AdvertisementConbtroller {
         Advertisement advertisement = advertisementMapper.queryAdvertisementByaid(aid);
         System.out.println(advertisement);
         ResultUtil.feedBack(response,"",advertisement,true);
-
-
     }
-
     @RequestMapping("/deleteAdvertisement")
-    public  String deleteAdvertisement(@Param("fid")Integer aid){
+    public  String deleteAdvertisement(ModelMap modelMap){
+        Integer aid = (Integer) modelMap.get("aid");
         advertisementMapper.deleteAdvertisement(aid);
-
         return "enterprise/enterpriseIndex";
 
-
     }
-
 
 @RequestMapping("/showHistory")
 public void  showHistory(ModelMap modelMap,HttpServletResponse response) throws IOException {
     Integer aid = (Integer) modelMap.get("aid");
     Advertisement advertisement = advertisementMapper.queryAdvertisementByaid(aid);
-
-
 }
 
+@RequestMapping("/viewApply")
+public String  showApply(@Param("aid")Integer aid,  Model model,HttpServletResponse response) throws IOException {
+      model.addAttribute("aid",aid);
+      return "enterprise/enterpriseApplyHistory";
+    }
+
+ @RequestMapping("/showApplyier")
+ public  void  appliers(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) throws IOException {
+       Integer aid = (Integer) modelMap.get("aid");
+
+     List<Apply> applies =  applyMapper.queryApplyByAid(aid);
+
+     List<ApplyHistory>  applyHistories = new ArrayList<>();
+
+     for(int i =0; i< applies.size(); i++){
+         Apply apply = applies.get(i);
+         ApplyHistory applyHistory = new ApplyHistory();
+         applyHistory.setApply(apply);
+         Integer fid = apply.getFid();
+         PDFFile pdfFile = fileMapper.queryFileByFid(fid);
+         applyHistory.setFile(pdfFile);
+         Student student2 = studentMapper.queryStudentByName(apply.getSname());
+         applyHistory.setStudent(student2);
+         applyHistory.setAdvertisement( advertisementMapper.queryAdvertisementByaid(apply.getAid()));
+         applyHistories.add(applyHistory);
+     }
+
+     System.out.println(applyHistories);
+     ResultUtil.feedBack(response, "返回数据", applyHistories, false);
+ }
 
 
+
+
+    @Autowired
+private FileMapper fileMapper;
+
+@RequestMapping("/showFeedback")
+    public  void showFeedback(@Param("applyid")Integer applyid, HttpServletResponse response) throws IOException {
+    String feedback = applyMapper.queryFeedback(applyid);
+    ResultUtil.feedBack(response,"",feedback,true);
+
+    }
+
+@RequestMapping("/applyHistory")
+    public  void  applyHistory(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) throws IOException {
+      Student student = (Student)modelMap.get("student");
+      String sname = student.getSname();
+
+       List<Apply> applies =  applyMapper.queryApplyBySname(sname);
+
+       List<ApplyHistory>  applyHistories = new ArrayList<>();
+
+       for(int i =0; i< applies.size(); i++){
+           Apply apply = applies.get(i);
+           ApplyHistory applyHistory = new ApplyHistory();
+           applyHistory.setApply(apply);
+           Integer fid = apply.getFid();
+           PDFFile pdfFile = fileMapper.queryFileByFid(fid);
+           applyHistory.setFile(pdfFile);
+            applyHistory.setStudent(student);
+          applyHistory.setAdvertisement( advertisementMapper.queryAdvertisementByaid(apply.getAid()));
+
+         applyHistories.add(applyHistory);
+       }
+        System.out.println(applyHistories);
+        ResultUtil.feedBack(response, "返回数据", applyHistories, false);
+}
+
+@RequestMapping("/changeStatus")
+    public String   changeStatuss(@Param("applyid")Integer applyid,@Param("status")String status ){
+    applyMapper.changeStatus(applyid,status);
+    return "/enterprise/enterpriseIndex";
+}
+
+    @RequestMapping("/changeFeedback")
+     public String   changeFeedback(@Param("applyid")Integer applyid,@Param("feedback")String feedback ){
+        applyMapper.changeFeedback(applyid,feedback);
+        return "/enterprise/enterpriseIndex";
+
+    }
 
 }
