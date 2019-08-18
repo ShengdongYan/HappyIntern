@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link th:href="@{/css/studentUploadFile.css}" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <meta charset="UTF-8">
+    <title>HappyIntern</title>
+    <script>
+
+        function textareaToData(str){
+            var reg=new RegExp("\n","g");
+            var regg = new RegExp("\r\n","g");
+            var regSpace=new RegExp(" ","g");
+            str = str.replace(reg,"<br>");
+            str = str.replace(regg,"<br>");
+            str = str.replace(regSpace,"&nbsp;");
+            return str;
+        }
+
+
+        function uploadFile(){
+
+
+                    $("#companyDescription").val(textareaToData($('#companyDescription').val()));
+                    document.getElementById("fileForm").submit();
+
+        }
+
+        $(function () {
+        });
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <a href="/student/index" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+        <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px;">
+    </a>
+</div>
+
+<div style="width:100%;text-align: center;margin-top:10px;border-bottom: 1px dashed #333333;margin-bottom: 30px">
+    <p style=" margin: auto; display: block; font-size: 25px; height:40px; width:600px; ">Please edit your report here!</p>
+
+</div>
+<div class="bigfileBox" >
+    <div class="innerBox">
+        <form action="/student/addReport" method="post" enctype="multipart/form-data" id="fileForm" οnkeydοwn="if(event.keyCode==13){return false;}"onSubmit="return false;"style="width: 800px">
+            <input   name="reporttitle" placeholder="Write a title for your report."  autocomplete="open" type="text" id="fdescription" style="width: 700px; height: 30px; font-size: 20px; display: block; margin-top: 15px;margin-bottom: 10px;">
+            <br>
+            <textarea id='companyDescription' name="content" placeholder="Write your report here" style="padding-left: 3px;padding-top: 5px;display: block;width: 700px;height:200px;font-size: 20px;margin-bottom: 30px "></textarea>
+        </form>
+        <br>
+
+        <div style="text-align: center">
+            <input type="button"  value="post" id="button" onclick="uploadFile()"  style="
+            background-color: #e84188;
+            float: none;
+             max-width: 290px;
+            font-weight: 700;
+            font-size: 22px;
+            Helvetica,Arial,sans-serif;
+            color: #333;
+            border: 1px solid #d6d6d6;
+            height: 2.8rem;
+            box-sizing: border-box;
+            margin:0  auto ;
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            line-height: 1.53334;
+            border-radius: 4px;
+              }"/>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

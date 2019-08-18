@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/studentCV.css}" rel="stylesheet" type="text/css"/>
+    <title>HappyIntern</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/getParameter.js"></script>
+
+    <script>
+
+        function viewFeedback(reportid){
+            var contentid = reportid+100;
+            var feedbackid= reportid+200;
+            var careaid = reportid+300;
+            var fareaid = reportid+400;
+
+            var flag =  $("#" + fareaid+ "")[0].style.display;
+
+            if(flag == "none") {
+                $.post("/student/showFeedback?reportid=" + reportid, $(), function (data) {
+                    $("#" + feedbackid + "").val("ok");
+                    $("#" + fareaid + "").html(data.data);
+
+                    $("#" + fareaid + "").css('display', 'block');
+                    flag = false;
+                });
+            }
+            else if(flag =="block"){
+
+                $("#" + feedbackid + "").val("Feedback");
+                $("#" + fareaid + "").css('display', 'none');
+                flag = true;
+            }
+        }
+
+        function viewContent(reportid){
+            var contentid = reportid+100;
+            var feedbackid= reportid+200;
+            var careaid = reportid+300;
+            var fareaid = reportid+400;
+
+            var flag =  $("#" + careaid+ "")[0].style.display;
+
+             if(flag == "none") {
+                $.post("/student/showContent?reportid=" + reportid, $(), function (data) {
+                    $("#" + contentid + "").val("ok");
+                    $("#" + careaid + "").html(data.data);
+
+                    $("#" + careaid + "").css('display', 'block');
+                    flag = false;
+                });
+            }
+            else if(flag =="block"){
+
+                $("#" + contentid + "").val("Content");
+                $("#" + careaid + "").css('display', 'none');
+                flag = true;
+            }
+        }
+
+        $(function () {
+
+            $.post("/student/listReport", $(), function (data) {
+
+                var reportlist = data.data;
+
+                //2.列表数据展示
+                var route_lis = "";
+
+                for (var i = 0; i < reportlist.length; i++) {
+
+
+                 /*   reportid                   int not null auto_increment,
+                        sname                  varchar(30) not null,
+                        supid                        int not null,
+                        content                 varchar(3000),
+                        reporttitle              varchar(30) ,
+                        feedback                varchar(3000) not null,
+                        reportdate               date,*/
+                    //获取{rid:1,rname:"xxx"}
+
+
+                    var reportid = reportlist[i].reportid;
+                    var sname = reportlist[i].sname;
+                    var supid = reportlist[i].supid;
+                    var content = reportlist[i].content;
+                    var reporttitle = reportlist[i].reporttitle;
+                    var feedback = reportlist[i].feedback;
+                    var reportdate = reportlist[i].reportdate;
+                    var contentid = reportid+100;
+                    var feedbackid= reportid+200;
+                    var careaid = reportid+300;
+                    var fareaid = reportid+400;
+
+
+                    /*
+                            <li>
+                                <div class="text1">
+                                    <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                                </div>
+                                <div class="price">
+                                    <p class="price_num">
+                                    <span>Time:</span>
+                                </p>
+                                <p><a href="route_detail.html">View</a>  &nbsp;&nbsp;
+                                    <a href="route_detail.html">Download</a>&nbsp;&nbsp;
+                                    <a href="route_detail.html">Delete</a>&nbsp;&nbsp;
+                                    </p>
+                                    </div>
+                                    </li>
+                    */
+
+                    var li = '<li>\n' +
+                        '                        <div class="text1">\n' +
+                        '                            <br/>\n' +
+                        '                            <p>'+reporttitle+'</p>\n' +
+
+                        '                        </div>\n' +
+                        '                        <div class="price">\n' +
+                        '                            <p class="price_num" style=" display: inline-block">\n' +
+                        '                                <span style="font-size: 15px; display: inline-block;height: 20px;margin: auto">'+reportdate+'</span>\n'+
+                        '                            </p>\n' +
+                        '                             <p style="margin-top: 20px">' +
+                        '                             <input  style="background-color: lightgreen; font-size: 18px" type="button" id="'+contentid+'"  onclick="viewContent('+reportid+')" value="Content"></input>  &nbsp;&nbsp;\n' +
+                        '                             <input  style="background-color: lightgreen; font-size: 18px" type="button"  id="'+feedbackid+'" onclick="viewFeedback('+reportid+')" value="Feedback"></input> </p> \n' +
+                        '                             </div>\n' +
+                        '                    </li>\n'+
+                        '                    <div id="'+careaid+'" style="padding-left: 3px;padding-top: 5px;display:none;width: 920px;font-size: 16px;margin-bottom: 30px; text-align: left;  word-wrap: break-word ;word-break : break-all;  border: 1px solid #eee">' +
+                        '                    </div> \n'+
+                        '                    <div id="'+fareaid+'" style="padding-left: 3px;padding-top: 5px;display:none;width: 920px;font-size: 16px;margin-bottom: 30px; text-align: left;  word-wrap: break-word ;word-break : break-all;  border: 1px solid #eee">' +
+                        '                    </div>      ';
+                    route_lis += li;
+                }
+                $("#files").html(route_lis);
+
+                //定位到页面顶部
+                window.scrollTo(0,0);
+            });
+
+
+
+            $.post("/loginTest/student", $(), function (data) {
+                if (data.flag) {
+                    var username = data.data.sname;
+                    $("#username").html( "<a href='/student/profilePage' id='username'>"+username+"</a>");
+                } else {
+                    /* alert(data.errorMsg);*/
+                }
+            });
+            $("#manageCV").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/CVPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+            $("#button").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+
+                        location.href = "/student/addReportPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#Profile").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/profilePage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#applyHistory").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/historyPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+            $("#WeeklyReport").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/reportPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
+
+
+        });
+
+
+
+
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <div class="container">
+        <a href="/student/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
+        <div class="topbar-left">
+            <span>|</span>
+            <a href="/student/index"  class="advertisement" >Internships</a><span>|</span>
+            <a  id="manageCV" >ManageFile</a> <span>|</span>
+            <a  id="applyHistory">ApplyHistory</a><span>|</span>
+            <a  id="WeeklyReport"style="    border-bottom: 5px solid #EEEEEE;">WeeklyReport</a> <span>|</span>
+            <a  id="Profile"  >Profile</a> <span>|</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/student/profilePage" id="username">Login</a>
+        </div>
+    </div>
+</div>
+<div class="page_one">
+    <div class="contant">
+        <!--<div class="crumbs">
+            <img src="/img/search.png" alt="">
+            <p>Manage your profile here</p>
+        </div>-->
+        <div class="xinxi clearfix">
+            <div class="left">
+                <div class="header">
+                    <span >Reports</span>
+                    <span class="jg">Operation</span>
+                </div>
+                <ul id="files">
+                </ul>
+                <div class="buttonbar" style="text-align: center">
+                    <input type="button" value="Submit another report"  id="button" class="button" style="
+                    background-color: #e84188;
+    float: none;
+    max-width: 290px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #333;
+    border: 1px solid #d6d6d6;
+    height: 2.8rem;
+    box-sizing: border-box;
+    margin: auto;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    line-height: 1.53334;
+    border-radius: 4px;
+    padding: 8px 12px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,12 +1,9 @@
 package com.dongdong.internship.Controller;
-import com.dongdong.internship.bean.Advertisement;
-import com.dongdong.internship.bean.ResultInfo;
-import com.dongdong.internship.bean.Student;
-import com.dongdong.internship.mapper.AdvertisementMapper;
-import com.dongdong.internship.mapper.InterestMapper;
-import com.dongdong.internship.mapper.StudentMapper;
+import com.dongdong.internship.bean.*;
+import com.dongdong.internship.mapper.*;
 import com.dongdong.internship.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +52,10 @@ public class StudentController {
     public String showProfile(){
         return "student/studentProfile";
     }
+    @RequestMapping("/reportPage")
+    public String showReport(){
+        return "student/studentWeeklyReport";
+    }
 
     @RequestMapping("/historyPage")
     public String showHistory(){
@@ -65,6 +66,10 @@ public class StudentController {
     public String showCV(){
         return "student/studentFiles";
 
+    }
+    @RequestMapping("/addReportPage")
+    public  String addReportPage(){
+        return "student/studentAddReport";
     }
 
     @RequestMapping("/fileUpload2")
@@ -99,6 +104,9 @@ public class StudentController {
     @Autowired
     private AdvertisementMapper advertisementMapper;
 
+    @Autowired
+    private ReportMapper reportMapper;
+
 
 
 
@@ -126,6 +134,8 @@ public class StudentController {
 
     }
 
+    @Autowired
+    private SupervisorMapper supervisorMapper;
 
     @RequestMapping("/queryStudent")
     @ResponseBody
@@ -136,43 +146,53 @@ public class StudentController {
     @RequestMapping("/registStudent")
     public void insert(HttpServletRequest request , HttpServletResponse response) throws IOException {
         Student confirmstudent = studentMapper.queryStudentByName(request.getParameter("sname"));
+
         if (confirmstudent != null) {
             ResultUtil.feedBack(response,"The user has existes \r\n Please try another username \r\n Or try to find your account by your email",null,false);
+
         }
         else {
-            try {
-                ResultInfo resultInfo = new ResultInfo();
-                Student student = new Student();
-                student.setSname(request.getParameter("sname"));
-                student.setSupname(request.getParameter("supname"));
-                student.setSmail(request.getParameter("smail"));
-                student.setPassword(request.getParameter("password"));
-                student.setSage(Integer.parseInt(request.getParameter("sage")));
-                student.setSchool(request.getParameter("school"));
-                studentMapper.registStudent(student);
+            Supervisor supervisor = supervisorMapper.querySupervisorByNameSchool(request.getParameter("supname"), request.getParameter("school"));
 
-                List<String> interests = Arrays.asList(request.getParameterValues("interests"));
-                for (String s : interests){
-                    System.out.println("这里是注册的地方，感兴趣的有  "+ s);
-                    interestMapper.addinterest(student.getSname(),s);
-                }
+            if (supervisor == null) {
+                ResultUtil.feedBack(response, "No such a supervisor, please try again", null, false);
 
-                resultInfo.setFlag(true);
-                resultInfo.setErrorMsg("注册成功");
-                ObjectMapper mapper = new ObjectMapper();
-                String json = mapper.writeValueAsString(resultInfo);
-                response.setContentType("application/json;charset=utf-8");
-                response.getWriter().write(json);
-                System.out.println(studentMapper.queryStudentList());
-            } catch (NumberFormatException ex) {
-                System.out.println("here");
-                String errorMsg = "";
-                errorMsg += ex.getMessage() + "\r\n";
-                StackTraceElement[] trace = ex.getStackTrace();
-                for (StackTraceElement s : trace) {
-                    errorMsg += "\tat " + s + "\r\n";
+            } else {
+                try {
+
+                    ResultInfo resultInfo = new ResultInfo();
+                    Student student = new Student();
+                    student.setSname(request.getParameter("sname"));
+                    student.setSupname(request.getParameter("supname"));
+                    student.setSmail(request.getParameter("smail"));
+                    student.setPassword(request.getParameter("password"));
+                    student.setSage(Integer.parseInt(request.getParameter("sage")));
+                    student.setSchool(request.getParameter("school"));
+                    studentMapper.registStudent(student);
+
+                    List<String> interests = Arrays.asList(request.getParameterValues("interests"));
+                    for (String s : interests) {
+                        System.out.println("这里是注册的地方，感兴趣的有  " + s);
+                        interestMapper.addinterest(student.getSname(), s);
+                    }
+
+                    resultInfo.setFlag(true);
+                    resultInfo.setErrorMsg("注册成功");
+                    ObjectMapper mapper = new ObjectMapper();
+                    String json = mapper.writeValueAsString(resultInfo);
+                    response.setContentType("application/json;charset=utf-8");
+                    response.getWriter().write(json);
+                    System.out.println(studentMapper.queryStudentList());
+                } catch (NumberFormatException ex) {
+                    System.out.println("here");
+                    String errorMsg = "";
+                    errorMsg += ex.getMessage() + "\r\n";
+                    StackTraceElement[] trace = ex.getStackTrace();
+                    for (StackTraceElement s : trace) {
+                        errorMsg += "\tat " + s + "\r\n";
+                    }
+                    ResultUtil.feedBack(response, errorMsg, null, false);
                 }
-                ResultUtil.feedBack(response, errorMsg, null, false);
             }
         }
     }
@@ -259,4 +279,47 @@ public class StudentController {
             System.out.println(advertisements);
             ResultUtil.feedBack(response,"",advertisements,true);
     }
+
+    @RequestMapping("/listReport")
+    public  void listReport(ModelMap modelMap, HttpServletResponse response) throws IOException {
+        Student student = (Student)modelMap.get("student");
+        String sname = student.getSname();
+        List<Report> reports = reportMapper.queryReportBySname(sname);
+        ResultUtil.feedBack(response,"",reports,true);
+    }
+
+
+
+
+   @RequestMapping("/addReport")
+    public String  addReport(HttpServletRequest request,ModelMap modelMap){
+        Report report = new Report();
+        report.setContent(request.getParameter("content"));
+        report.setReporttitle(request.getParameter("reporttitle"));
+        Student student = (Student) modelMap.get("student");
+        report.setSname(student.getSname());
+        Supervisor supervisor = supervisorMapper.querySupervisorByNameSchool(student.getSupname(),student.getSchool());
+        report.setSupid(supervisor.getSupid());
+       SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+       Date nowDate= new Date();
+       String createdate= sdf.format(nowDate);
+       report.setReportdate(createdate);
+       reportMapper.addReport(report);
+       return  "student/studentWeeklyReport";
+   }
+
+   @RequestMapping("/showContent")
+    public void showContent(@Param("reportid")Integer reportid,HttpServletResponse response) throws IOException {
+        String content = reportMapper.queryContent(reportid);
+       ResultUtil.feedBack(response,"",content,true);
+   }
+
+    @RequestMapping("/showFeedback")
+    public void showFeedback(@Param("reportid")Integer reportid,HttpServletResponse response) throws IOException {
+        String feedback = reportMapper.queryFeedback(reportid);
+        ResultUtil.feedBack(response,"",feedback,true);
+    }
+
+
+
 }

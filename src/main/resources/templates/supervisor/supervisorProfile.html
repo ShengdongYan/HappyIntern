@@ -21,7 +21,7 @@
             }
         }
         function checkEmail(){
-            var Email = $("#email").val();
+            var Email = $("#supmail").val();
             var reg_email = /^[a-z0-9]+@[a-z0-9]+(\.[a-z]+){1,5}$/;
             if(reg_email.test(Email)){
                 return true;
@@ -33,14 +33,14 @@
         }
 
         function checkForm(){
-            var userName = $("#ename").val();
+            var userName = $("#supname").val();
             var reg_uername =/^\w{3,20}$/;
             var errorInfo;
             if (reg_uername.test(userName)){
                 if( checkpassword()){
                     if(checkEmail()) {
 
-                        if ( $("#website").val() !== "") {
+                        if ( $("#title").val() !== "") {
                             return true;
 
                         } else {
@@ -77,21 +77,23 @@
 
         $(function () {
 
-            $.post("/loginTest/enterprise", $(), function (data) {
+            $.post("/loginTest/supervisor", $(), function (data) {
                 if (data.flag) {
-                    var username = data.data.ename;
+                    var username = data.data.supname;
                     var password = data.data.password;
-                    var website = data.data.website;
-                    var email = data.data.email;
+                    var school = data.data.school;
+                    var supmail = data.data.supmail;
+                    var title = data.data.suptitle;
 
 
-                    alert(username);
+
                     $("#username").html( "<a href='' id='username'>"+username+"</a>");
 
-                    $("#ename").val(username);
+                    $("#supname").val(username);
                     $("#password").val(password);
-                    $("#email").val(email);
-                    $("#website").val(website);
+                    $("#supmail").val(supmail);
+                    $("#school").val(school);
+                    $("#title").val(title);
 
                 } else {
                     /* alert(data.errorMsg);*/
@@ -100,10 +102,10 @@
             });
             $("#saveButton").click(function () {
                 if (checkForm()) {
-                    $.post("/enterprise/updateEnterprise", $("#registForm").serialize(), function (data) {
+                    $.post("/supervisor/updateSupervisor", $("#registForm").serialize(), function (data) {
                         if (data.flag) {
                             alert("Sucessful, you should login now");
-                            location.href = "/enterprise/index";
+                            location.href = "/supervisor/index";
 
                         } else {
                             alert(data.errorMsg);
@@ -117,8 +119,8 @@
 
             $("#logOutButton").click(function () {
                 if (checkForm()) {
-                    $.post("/enterprise/logOutEnterprise", $(), function () {
-                        location.href = "/enterprise/index";
+                    $.post("/supervisor/logOutSupervisor", $(), function () {
+                        location.href = "/supervisor/index";
 
                     });
                 }
@@ -128,9 +130,9 @@
 
 
             $("#Profile").click(function () {
-                $.post("/loginTest/enterprise", $(), function (data) {
+                $.post("/loginTest/supervisor", $(), function (data) {
                     if (data.flag) {
-                        location.href = "/enterprise/profilePage";
+                        location.href = "/supervisor/profilePage";
                     } else {
                         alert(data.errorMsg);
                     }
@@ -146,14 +148,15 @@
 <body>
 <div class="topbar">
     <div class="container">
-        <a href="/enterprise/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
+        <a href="/supervisor/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
         <div class="topbar-left">
             <span>|</span>
-            <a href="/enterprise/index"  class="advertisement" >Internships</a><span>|</span>
-            <a  id="Profile"  style="    border-bottom: 5px solid #EEEEEE;">Profile</a> <span>|</span>
+            <a  id="MyAdvertisement" style="    border-bottom: 5px solid #EEEEEE; ">WeeklyReports</a> <span>|</span>
+            <!-- <a  id="applyHistory">ApplyHistory</a><span>|</span>-->
+            <a  id="Profile">Profile</a> <span>|</span>
         </div>
         <div class="topbar-right">
-            <a href="/student/loginPage" id="username">Login</a>
+            <a href="/supervisor/loginPage" id="username">Login</a>
         </div>
     </div>
 </div>
@@ -167,7 +170,7 @@
         <form id="registForm" name="registForm" class="signForm" method="post" >
             <div class="divname">
                 <label class="username">Username</label>
-                <input type="text" class="Inputname" id="ename" name="ename">
+                <input type="text" class="Inputname" id="supname" name="supname">
             </div>
             <div class="divpassword">
                 <label class="password">Password</label>
@@ -175,11 +178,15 @@
             </div>
             <div>
                 <label >Email</label>
-                <input type="text"  id="email" name="email">
+                <input type="text"  id="supmail" name="supmail">
             </div>
             <div>
-                <label >Website</label>
-                <input type="text"  id="website" name="website">
+                <label >title</label>
+                <input type="text"  id="title" name="suptitle">
+            </div>
+            <div>
+                <label >school</label>
+                <input type="text"  id="school" name="school">
             </div>
 
             <div class="clean"> </div>

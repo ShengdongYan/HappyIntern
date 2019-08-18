@@ -179,6 +179,17 @@
                 });
 
             });
+            $("#WeeklyReport").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/reportPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
+
+                });
+
+            });
 
         });
 
@@ -217,35 +228,6 @@
                     <span class="jg">Applier</span>
                 </div>
                 <ul id="files">
-                    <li>
-                        <div class="text1">
-                            <img src="/logo/ECA7E0D60248490EB9E290F7B3001ED8_Banner_51087.png" alt="Neptune jobs" style="">
-                             <p class="text">Java Developer</p>
-                        </div>
-                        <div class="price"><p class="price_num">Java-研一-闫胜东.pdf</p>
-                            <p class="price_num">Time:</p>
-                            <p class="price_num">Status</p>
-                            <br>
-                            <p class="buttons"><a href="route_detail.html">View</a>  &nbsp;&nbsp;
-                                <a href="route_detail.html">Feedback</a>&nbsp;&nbsp;</p>
-                        </div>
-                    </li>
-                    <li>
-
-                        <div class="text1">
-                            <p >浪花朵朵旅行普吉岛丛林飞跃空中飞人探险游中文服务泰国旅游</p>
-                            <br/>
-                            <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
-                        </div>
-                        <div class="price">
-                            <p class="price_num">
-                                <span>&yen;</span>
-                                <span>899</span>
-                                <span>起</span>
-                            </p>
-                            <p><a href="route_detail.html">查看详情</a></p>
-                        </div>
-                    </li>
 
 
                 </ul>

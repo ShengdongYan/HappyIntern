@@ -2,6 +2,7 @@ package com.dongdong.internship.Controller;
 
 import com.dongdong.internship.bean.Enterprise;
 import com.dongdong.internship.bean.Student;
+import com.dongdong.internship.bean.Supervisor;
 import com.dongdong.internship.util.ResultUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +43,19 @@ public class LoginTestController {
 
         if (enterprise!=null) {
             ResultUtil.feedBack(response, "登录了", enterprise, true);
+        }
+        else
+            ResultUtil.feedBack(response, "没登录,来自登录检测器", null, false);
+    }
+
+
+    @RequestMapping("/supervisor")
+    public void supervisorLoginTest(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Supervisor supervisor = (Supervisor) session.getAttribute("supervisor");
+
+        if (supervisor!=null) {
+            ResultUtil.feedBack(response, "登录了", supervisor, true);
         }
         else
             ResultUtil.feedBack(response, "没登录,来自登录检测器", null, false);

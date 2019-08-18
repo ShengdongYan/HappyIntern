@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdong.internship.mapper.SupervisorMapper">
+
+    <select id="querySupervisorByNamePassword" resultType="supervisor" >
+        select * from supervisor where  supname = #{supname} and password = #{password}
+    </select>
+    <select id="querySupervisorByNameSchool" resultType="supervisor" >
+        select * from supervisor where  supname = #{supname} and school = #{school}
+    </select>
+
+
+
+    <insert id="registSupervisor" parameterType="supervisor">
+        INSERT INTO
+            supervisor
+            (supname,password,suptitle,school,supmail)
+        VALUES
+            ( #{supname},#{password}, #{suptitle}, #{school},#{supmail})
+    </insert>
+
+    <update id="updateSupervisor" parameterType="supervisor" >
+        update supervisor set
+                              supname = #{supname},
+                              password = #{password},
+                              suptitle = #{suptitle},
+                              school = #{school},
+                              supmail = #{supmail}
+        where  supid = #{supid}
+
+
+    </update>
+
+
+
+</mapper>

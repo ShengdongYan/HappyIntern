@@ -188,7 +188,17 @@
                 });
 
             });
+            $("#WeeklyReport").click(function () {
+                $.post("/loginTest/student", $(), function (data) {
+                    if (data.flag) {
+                        location.href = "/student/reportPage";
+                    } else {
+                        alert(data.errorMsg);
+                    }
 
+                });
+
+            });
 
 
         });

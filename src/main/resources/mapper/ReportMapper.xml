@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdong.internship.mapper.ReportMapper">
+
+
+    <insert id="addReport" parameterType="report" >
+        INSERT INTO
+            report
+            (sname,supid,content,reporttitle,feedback,reportdate)
+        VALUES
+            ( #{sname},#{supid}, #{content}, #{reporttitle},#{feedback},#{reportdate})
+    </insert>
+
+    <select id="queryReportBySname" resultType="report">
+        select * from report where sname=#{sname}
+    </select>
+
+
+    <select id="queryReportBySupid" resultType="report">
+        select * from report where supid=#{supid}
+    </select>
+
+    <select id="queryFeedback" resultType="String">
+        select feedback from report where  reportid = #{reportid}
+    </select>
+    <select id="queryContent" resultType="String">
+        select content from report where  reportid = #{reportid}
+    </select>
+
+    <update id="addFeedback"  >
+        update report set
+            feedback = #{feedback}
+
+        where  reportid = #{reportid}
+
+    </update>
+
+
+<!--
+    <delete id="deleteApply" parameterType="Integer">
+        DELETE  FROM aapply where applyid = #{applyid}
+    </delete>-->
+
+
+</mapper>

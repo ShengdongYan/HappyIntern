@@ -2,17 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/studentProfile.css">
+    <link th:href="@{/css/studentRegist.css}" rel="stylesheet" type="text/css"/>
     <script src="/js/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
     <title>HappyIntern</title>
 
     <script>
 
-
+        /*        function checkusername() {
+                    var userName = $("#username").val();
+                    var reg_uername =/^\w{8,20}$/;
+                    if (reg_uername.test(userName)){
+                        $("#username").css("border","");
+                        return true;
+                    }
+                    else{
+                        $("#username").css("border","1px solid red");
+                        return false;
+                    }
+                }*/
         function checkpassword() {
             var passWord = $("#password").val();
-            var reg_password =/^\w{8,20}$/;
+            var reg_password =/^\w{5,20}$/;
             if (reg_password.test(passWord)){
                 return true;
             }
@@ -21,7 +32,7 @@
             }
         }
         function checkEmail(){
-            var Email = $("#email").val();
+            var Email = $("#supmail").val();
             var reg_email = /^[a-z0-9]+@[a-z0-9]+(\.[a-z]+){1,5}$/;
             if(reg_email.test(Email)){
                 return true;
@@ -33,14 +44,14 @@
         }
 
         function checkForm(){
-            var userName = $("#ename").val();
+            var userName = $("#supname").val();
             var reg_uername =/^\w{3,20}$/;
             var errorInfo;
             if (reg_uername.test(userName)){
                 if( checkpassword()){
                     if(checkEmail()) {
 
-                        if ( $("#website").val() !== "") {
+                        if ( $("#title").val() !== "" ) {
                             return true;
 
                         } else {
@@ -77,34 +88,13 @@
 
         $(function () {
 
-            $.post("/loginTest/enterprise", $(), function (data) {
-                if (data.flag) {
-                    var username = data.data.ename;
-                    var password = data.data.password;
-                    var website = data.data.website;
-                    var email = data.data.email;
 
-
-                    alert(username);
-                    $("#username").html( "<a href='' id='username'>"+username+"</a>");
-
-                    $("#ename").val(username);
-                    $("#password").val(password);
-                    $("#email").val(email);
-                    $("#website").val(website);
-
-                } else {
-                    /* alert(data.errorMsg);*/
-                }
-
-            });
-            $("#saveButton").click(function () {
-                if (checkForm()) {
-                    $.post("/enterprise/updateEnterprise", $("#registForm").serialize(), function (data) {
+            $("#button").click(function () {
+                if(checkForm()) {
+                    $.post("/supervisor/registSupervisor", $("#registForm").serialize(), function (data) {
                         if (data.flag) {
-                            alert("Sucessful, you should login now");
-                            location.href = "/enterprise/index";
-
+                            location.href = "/supervisor/loginPage";
+                            alert("Congratulation!  Please Log in now! ");
                         } else {
                             alert(data.errorMsg);
                         }
@@ -115,22 +105,12 @@
                 else return;
             });
 
-            $("#logOutButton").click(function () {
-                if (checkForm()) {
-                    $.post("/enterprise/logOutEnterprise", $(), function () {
-                        location.href = "/enterprise/index";
-
-                    });
-                }
-            });
 
 
-
-
-            $("#Profile").click(function () {
-                $.post("/loginTest/enterprise", $(), function (data) {
+            $("#toplogo").click(function () {
+                $.post("/loginTest/supervisor", $(), function (data) {
                     if (data.flag) {
-                        location.href = "/enterprise/profilePage";
+                        location.href = "/supervisor/index";
                     } else {
                         alert(data.errorMsg);
                     }
@@ -138,36 +118,27 @@
                 });
 
             });
-
-
         });
+
     </script>
 </head>
 <body>
 <div class="topbar">
-    <div class="container">
-        <a href="/enterprise/index"><img src="/img/logo.png" alt="HappyIntern" style="width: 90px; height: 65px; float: left"></a>
-        <div class="topbar-left">
-            <span>|</span>
-            <a href="/enterprise/index"  class="advertisement" >Internships</a><span>|</span>
-            <a  id="Profile"  style="    border-bottom: 5px solid #EEEEEE;">Profile</a> <span>|</span>
-        </div>
-        <div class="topbar-right">
-            <a href="/student/loginPage" id="username">Login</a>
-        </div>
-    </div>
+    <a id="toplogo" STYLE="text-align: center; display: block; width: 120px;margin: auto">
+        <img src="/img/logo.png" alt="HappyIntern" style="width: 120px; height: 65px; "></a>
 </div>
 
 <div class="bigBox">
     <div class="innerBox">
-        <!--        <div class="buttonBox">
-                    <a class="signIn" href="registPage"> Register </a>&lt;!&ndash;<span>|</span>&ndash;&gt;
-                    <a class="logIn"  href="loginPage"> Log in </a>
-                </div>-->
+        <div class="buttonBox">
+            <a class="signIn" href="registPage"> Register </a><!--<span>|</span>-->
+            <a class="logIn"  href="loginPage"> Log in </a>
+        </div>
+
         <form id="registForm" name="registForm" class="signForm" method="post" >
             <div class="divname">
                 <label class="username">Username</label>
-                <input type="text" class="Inputname" id="ename" name="ename">
+                <input type="text" class="Inputname" id="supname" name="supname">
             </div>
             <div class="divpassword">
                 <label class="password">Password</label>
@@ -175,16 +146,20 @@
             </div>
             <div>
                 <label >Email</label>
-                <input type="text"  id="email" name="email">
+                <input type="text"  id="supmail" name="supmail">
             </div>
             <div>
-                <label >Website</label>
-                <input type="text"  id="website" name="website">
+                <label >Title</label>
+                <input type="text"  id="title" name="suptitle">
+            </div>
+            <div>
+                <label >School</label>
+                <input type="text"  id="school" name="school">
             </div>
 
             <div class="clean"> </div>
             <div class="divbutton">
-                <input type="button" id ="saveButton"  name="button" value="Update"
+                <input type="button" id ="button"  name="button" value="Register"
                        style="
             background-color: #e84188;
             float: none;
@@ -206,28 +181,6 @@
             border-radius: 4px;
               }">
             </div>
-            <div class="clean">
-                <input type="button" id ="logOutButton"  name="button" value="Logout"
-                       style="
-            background-color: #e84188;
-            float: none;
-             max-width: 290px;
-            font-weight: 700;
-            font-size: 22px;
-            Helvetica,Arial,sans-serif;
-            color: #333;
-            border: 1px solid #d6d6d6;
-            height: 2.8rem;
-            box-sizing: border-box;
-            margin: 0 auto 20px;
-            width: 100%;
-            display: inline-block;
-            text-align: center;
-            vertical-align: middle;
-            -ms-touch-action: manipulation;
-            line-height: 1.53334;
-            border-radius: 4px;
-              }"></div>
         </form>
     </div>
 </div>
