@@ -30,10 +30,10 @@ public class LoginTestController {
         Student student = (Student) modelMap.get("student");
         String username = (String) modelMap.get("username");
         if (student!=null) {
-            ResultUtil.feedBack(response, "登录了", student, true);
+            ResultUtil.feedBack(response, "", student, true);
         }
         else
-            ResultUtil.feedBack(response, "没登录,来自登录检测器", student, false);
+            ResultUtil.feedBack(response, "Please log in !", student, false);
     }
 
     @RequestMapping("/enterprise")
@@ -42,10 +42,10 @@ public class LoginTestController {
           Enterprise enterprise = (Enterprise) session.getAttribute("enterprise");
 
         if (enterprise!=null) {
-            ResultUtil.feedBack(response, "登录了", enterprise, true);
+            ResultUtil.feedBack(response, "", enterprise, true);
         }
         else
-            ResultUtil.feedBack(response, "没登录,来自登录检测器", null, false);
+            ResultUtil.feedBack(response, "Please log in !", null, false);
     }
 
 
@@ -55,9 +55,9 @@ public class LoginTestController {
         Supervisor supervisor = (Supervisor) session.getAttribute("supervisor");
 
         if (supervisor!=null) {
-            ResultUtil.feedBack(response, "登录了", supervisor, true);
+            ResultUtil.feedBack(response, "", supervisor, true);
         }
         else
-            ResultUtil.feedBack(response, "没登录,来自登录检测器", null, false);
+            ResultUtil.feedBack(response, "Please log in !", null, false);
     }
 }

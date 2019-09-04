@@ -21,7 +21,7 @@
     </select>
 
     <select id="searchAdvertisement" resultType="advertisement">
-        select * from advertisement where  enddate > #{date} and title like  "%"#{interest}"%"
+        select * from advertisement where  enddate > #{date} and title like  "%"#{interest}"%"  order by enddate asc
     </select>
 
 
